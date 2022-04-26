@@ -1,9 +1,10 @@
-import color
 import cv2
-import shape
-from .types import Settings
 import numpy as np
-import cv2
+
+import color
+import shape
+
+from settings import Settings
 
 
 def detect_intredit_signs(img_path: str, settings: Settings) -> np.array:
@@ -13,8 +14,8 @@ def detect_intredit_signs(img_path: str, settings: Settings) -> np.array:
         img, settings.color_low, settings.color_high)
 
     circles = shape.detect_circle(
-        img,
-        settings.db,
+        color_isolated,
+        settings.dp,
         settings.min_dist_circle,
         settings.min_radius,
         settings.max_radius)
@@ -26,7 +27,7 @@ def detect_intredit_signs(img_path: str, settings: Settings) -> np.array:
 
     for circle in circles:
         x, y, r = circle
-        if shape.detect_line(img[y:y + r, x:x + r, :]):
+        if shape.detect_line(img[y - r:y + r, x - r:x + r, :]):
             cv2.circle(output, (x, y), r + 10, (0, 255, 0), 4)
 
     return output
