@@ -6,9 +6,17 @@ def detect_circle(
         img: np.array,
         original: np.array,
         dp: float,
-        min_dist: int) -> np.array:
+        min_dist: int,
+        min_radius: int,
+        max_radius: int) -> np.array:
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, dp, min_dist)
+    circles = cv2.HoughCircles(
+        gray,
+        cv2.HOUGH_GRADIENT,
+        dp,
+        min_dist,
+        minRadius=min_radius,
+        maxRadius=max_radius)
 
     if circles is not None:
         circles = np.round(circles[0, :]).astype("int")
