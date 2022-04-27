@@ -8,6 +8,7 @@ import shape
 
 from settings import Settings
 
+
 def detect_intredit_signs(img_path: str, settings: Settings) -> np.array:
     img = cv2.imread(img_path)
 
@@ -42,7 +43,7 @@ def detect_intredit_signs(img_path: str, settings: Settings) -> np.array:
             x_left, x_right = x, x + r
 
         img_cropped = color_isolated[y_left:y_right, x_left:x_right, :]
-        
+
         if img[y_left:y_right, x_left:x_right, :].shape[1] == 0:
             continue
 

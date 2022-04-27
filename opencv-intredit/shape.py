@@ -3,6 +3,7 @@ import numpy as np
 from typing import List
 import random
 
+
 def detect_circle(
         img: np.array,
         dp: float,
@@ -52,16 +53,21 @@ def detect_line(img: np.array,
     return False
 
 
-def detect_rectangle(img, kernel_size=(3, 3), w_extrema=(20, 50), h_extrema=(10, 20)) -> bool:
+def detect_rectangle(
+    img, kernel_size=(
+        3, 3), w_extrema=(
+            20, 50), h_extrema=(
+                10, 20)) -> bool:
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-
     normed = cv2.normalize(gray, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
-    kernel = cv2.getStructuringElement(shape=cv2.MORPH_ELLIPSE, ksize=kernel_size)
+    kernel = cv2.getStructuringElement(
+        shape=cv2.MORPH_ELLIPSE, ksize=kernel_size)
     opened = cv2.morphologyEx(normed, cv2.MORPH_OPEN, kernel)
-    
-    contours, _ = cv2.findContours(opened, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-    
+
+    contours, _ = cv2.findContours(
+        opened, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+
     for cnt in contours:
         bbox = cv2.boundingRect(cnt)
 
@@ -69,6 +75,5 @@ def detect_rectangle(img, kernel_size=(3, 3), w_extrema=(20, 50), h_extrema=(10,
 
         if w_extrema[0] <= w < w_extrema[1] and h_extrema[0] <= h < h_extrema[1]:
             return True
-
 
     return False
