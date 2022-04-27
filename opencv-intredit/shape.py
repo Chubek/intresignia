@@ -1,20 +1,28 @@
 import cv2
 import numpy as np
 from typing import List
-import random
 
 
 def detect_circle(
         img: np.array,
-        dp: float,
-        min_dist: int,
-        min_radius: int,
-        max_radius: int,
-        param_1: int,
-        param_2: int) -> np.array and np.array:
+        dp=3.3,
+        min_dist=500,
+        min_radius=5,
+        max_radius=10,
+        param_1=200,
+        param_2=20) -> np.array and np.array:
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    normed = cv2.normalize(gray, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
+    kernel = cv2.getStructuringElement(
+        shape=cv2.MORPH_ELLIPSE, ksize=(3, 3))
+    opened = cv2.morphologyEx(normed, cv2.MORPH_OPEN, kernel)
+
+    kernel_size = 5
+    blur_opened = cv2.GaussianBlur(opened, (kernel_size, kernel_size), 0)
+
     circles = cv2.HoughCircles(
-        gray,
+        blur_opened,
         cv2.HOUGH_GRADIENT,
         dp,
         min_dist,
@@ -39,10 +47,15 @@ def detect_line(img: np.array,
                 min_line_length=20,
                 max_line_gap=20) -> bool:
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    kernel_size = 5
-    blur_gray = cv2.GaussianBlur(gray, (kernel_size, kernel_size), 0)
 
-    edges = cv2.Canny(blur_gray, edge_low_threshold, edge_high_threshold)
+    normed = cv2.normalize(gray, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
+    kernel = cv2.getStructuringElement(
+        shape=cv2.MORPH_ELLIPSE, ksize=(3, 3))
+    opened = cv2.morphologyEx(normed, cv2.MORPH_OPEN, kernel)
+    kernel_size = 5
+    blur_opened = cv2.GaussianBlur(opened, (kernel_size, kernel_size), 0)
+
+    edges = cv2.Canny(blur_opened, edge_low_threshold, edge_high_threshold)
 
     lines = cv2.HoughLinesP(edges, rho, theta, threshold, np.array([]),
                             min_line_length, max_line_gap)
@@ -64,9 +77,10 @@ def detect_rectangle(
     kernel = cv2.getStructuringElement(
         shape=cv2.MORPH_ELLIPSE, ksize=kernel_size)
     opened = cv2.morphologyEx(normed, cv2.MORPH_OPEN, kernel)
-
+    kernel_size = 5
+    blur_opened = cv2.GaussianBlur(opened, (kernel_size, kernel_size), 0)
     contours, _ = cv2.findContours(
-        opened, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        blur_opened, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
     for cnt in contours:
         bbox = cv2.boundingRect(cnt)
@@ -74,6 +88,23 @@ def detect_rectangle(
         x, y, w, h = bbox
 
         if w_extrema[0] <= w < w_extrema[1] and h_extrema[0] <= h < h_extrema[1]:
+            return True
+
+    return False
+
+
+def detect_triangle(img, eps=1.07) -> bool:
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    blur = cv2.GaussianBlur(gray, (5, 5), 0)
+
+    thresh = cv2.adaptiveThreshold(blur, 255, 1, 1, 11, 2)
+    contours, _ = cv2.findContours(
+        thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+
+    for cnt in contours:
+        approx = cv2.approxPolyDP(cnt, eps * cv2.arcLength(cnt, True), True)
+
+        if len(approx.ravel()) == 3:
             return True
 
     return False

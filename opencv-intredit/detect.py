@@ -47,7 +47,7 @@ def detect_intredit_signs(img_path: str, settings: Settings) -> np.array:
         if img[y_left:y_right, x_left:x_right, :].shape[1] == 0:
             continue
 
-        if shape.detect_line(
+        detect_line = shape.detect_line(
                 img_cropped,
                 settings.edge_low_threshold,
                 settings.edge_high_threshold,
@@ -55,18 +55,42 @@ def detect_intredit_signs(img_path: str, settings: Settings) -> np.array:
                 settings.theta,
                 settings.line_threshold,
                 settings.min_line_Length,
-                settings.max_line_gap):
+                settings.max_line_gap)
+
+        detect_rectangle = shape.detect_rectangle(
+                img_cropped,
+                settings.kernel_size,
+                settings.w_extrema,
+                settings.h_extrema)
+
+        
+        detect_circle = shape.detect_circle(
+                    img_cropped,
+                    settings.dp,
+                    settings.min_dist_circle,
+                    settings.min_radius,
+                    settings.max_radius,
+                    settings.param_1,
+                    settings.param_2)
+
+        detect_triangle = shape.detect_triangle(img_cropped, settings.epps)
+
+        if detect_triangle:
+            continue
+
+        if not detect_rectangle and detect_line:
             cv2.circle(output, (x, y), r + 10, (0, 255, 0), 4)
             cv2.putText(output, "General Intredit", (x, y),
                         cv2.FONT_HERSHEY_COMPLEX, 1, (10, 250, 50), 1, 2)
 
-        if shape.detect_rectangle(
-                img_cropped,
-                settings.kernel_size,
-                settings.w_extrema,
-                settings.h_extrema):
+        if not detect_line and not detect_circle and detect_rectangle:
             cv2.circle(output, (x, y), r + 10, (0, 255, 0), 4)
             cv2.putText(output, "Entry Intredit", (x, y),
                         cv2.FONT_HERSHEY_COMPLEX, 1, (10, 250, 50), 1, 2)
-
+    
+        if detect_circle.any():
+            cv2.circle(output, (x, y), r + 10, (0, 255, 0), 4)
+            cv2.putText(output, "Ring Intredit", (x, y),
+                        cv2.FONT_HERSHEY_COMPLEX, 1, (10, 250, 50), 1, 2)
+    
     return output

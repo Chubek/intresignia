@@ -10,7 +10,7 @@ class Settings(BaseModel):
     dp: Optional[float] = 3.3
     min_dist_circle: Optional[int] = 580
     min_radius: Optional[int] = 5
-    max_radius: Optional[int] = 10
+    max_radius: Optional[int] = 180
     param_1: Optional[int] = 200
     param_2: Optional[int] = 20
     edge_low_threshold: Optional[int] = 50
@@ -23,3 +23,4 @@ class Settings(BaseModel):
     kernel_size: Optional[Tuple[int, int]] = (3, 3)
     w_extrema: Optional[Tuple[int, int]] = (5, 80)
     h_extrema: Optional[Tuple[int, int]] = (5, 30)
+    epps: Optional[float] = 1.07
