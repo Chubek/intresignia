@@ -15,11 +15,13 @@ def detect_circle(
 
     normed = cv2.normalize(gray, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
     kernel = cv2.getStructuringElement(
-        shape=cv2.MORPH_ELLIPSE, ksize=(3, 3))
+        shape=cv2.MORPH_ELLIPSE, ksize=(5, 5))
     opened = cv2.morphologyEx(normed, cv2.MORPH_OPEN, kernel)
+    
+    thresh = cv2.adaptiveThreshold(opened, 255, 1, 1, 11, 2)
 
     kernel_size = 5
-    blur_opened = cv2.GaussianBlur(opened, (kernel_size, kernel_size), 0)
+    blur_opened = cv2.GaussianBlur(thresh, (kernel_size, kernel_size), 0)
 
     circles = cv2.HoughCircles(
         blur_opened,
@@ -103,8 +105,8 @@ def detect_triangle(img, eps=1.07) -> bool:
 
     for cnt in contours:
         approx = cv2.approxPolyDP(cnt, eps * cv2.arcLength(cnt, True), True)
-
+        print(approx)
         if len(approx.ravel()) == 3:
             return True
-
+    print("---")
     return False
