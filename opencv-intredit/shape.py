@@ -105,8 +105,6 @@ def detect_triangle(img, eps=1.07) -> bool:
 
     for cnt in contours:
         approx = cv2.approxPolyDP(cnt, eps * cv2.arcLength(cnt, True), True)
-        print(approx)
         if len(approx.ravel()) == 3:
             return True
-    print("---")
     return False
