@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(
-    name='opencv_intredit',
+    name='intresignia',
     version='0.0.1beta',
-    packages=['opencv-intredit'],
+    packages=['intresignia'],
     install_requires=[
         'opencv-python',
         'numpy',

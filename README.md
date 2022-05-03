@@ -1,4 +1,4 @@
-# OpenCV - Intredit
+# Intresignia
 
 [![CircleCI](https://circleci.com/gh/Chubek/opencv-intredit/tree/master.svg?style=shield)](https://circleci.com/gh/Chubek/opencv-intredit/tree/master)
 
