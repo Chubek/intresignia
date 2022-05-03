@@ -11,4 +11,5 @@ setup(
         'scikit-image',
         'pillow',
     ],
+    package_data={'': ['intresignia/temp_img/*.png']},
 )
