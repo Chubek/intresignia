@@ -27,6 +27,8 @@ def detect_intredit_signs(img_path: str, settings: Settings, pyrd=True) -> np.ar
 
     Returns
         Final image annotated: np.array    
+        Score dict: List 
+            final SSIM score dict
     """
     
     
@@ -53,7 +55,9 @@ def detect_intredit_signs(img_path: str, settings: Settings, pyrd=True) -> np.ar
         raise ValueError("No circle-like shapes found")
 
     output = img.copy()
+
     dcts = []
+
     for circle in circles:
         x, y, r = circle
 
@@ -81,13 +85,9 @@ def detect_intredit_signs(img_path: str, settings: Settings, pyrd=True) -> np.ar
         if temp == -1:
             continue
     
-        cv2.circle(output, (x, y), r, (0, 255, 0), 4)
-        cv2.putText(output, temp, (x, y),
-                cv2.FONT_HERSHEY_COMPLEX, 1, (10, 250, 50), 1, 2)
-
+        cv2.circle(output, (x, y), r, (0, 255, 0), 4)        
      
     if len(dcts) == 0:
         raise ValueError("No signs detected")
 
-    print(dcts)
     return output, dcts
