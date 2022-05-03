@@ -43,7 +43,7 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 ```
-An exhaustive list of settings will be added to this readme pretty soon. Meanwhile please use the `help(Settings)`.
+An exhaustive list of settings + grid search to find the best params using `grid_search.py` will be added to this readme pretty soon. Meanwhile please use the `help(Settings)`.
 
 
 Any questions regarding this library should be direct at Chubak#7400.
