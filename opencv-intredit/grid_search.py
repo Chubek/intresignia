@@ -1,19 +1,21 @@
-from gc import callbacks
-
-from cv2 import DCT_ROWS
-import detect
-from random import randint, uniform, choice
-import settings
-import os
-import cv2
-import json
-import tqdm
-import tkinter as tk
-import sys
 import glob
-from PIL import ImageTk,Image
+import json
+import os
 import pprint
+import sys
+import tkinter as tk
+from gc import callbacks
+from random import choice, randint, uniform
 
+import cv2
+import tqdm
+from cv2 import DCT_ROWS
+from PIL import Image, ImageTk
+
+import detect
+import settings
+
+### Adjust these to control the range of values
 min_max_red_thresh = (100, 150)
 min_max_db = (2.0, 6.0)
 min_max_dist = (200, 400)
@@ -32,6 +34,27 @@ min_max_h_ext = ((20, 30), (50, 100))
 
 
 def do_grid_search(imgpath, num):
+    """
+    This function is the backboen of the grid search system.
+    Just pass images and the number through a loop.
+
+    Resulting images and JSONs are saved to the root folder of the project
+    in a folder called `~/results` like `~/results/22/22.png` and ~/results/22/22.json`.
+
+    You don't need to manually view the results you can just launch this file with `gui` flag to
+    view the Tkinter GUI I made for viewing the results.
+
+    Pass the `gs` flag to do the grid search.
+
+    Param
+    -----
+    imgpath: str
+        path of IMG
+    num:
+        Number in the loop, also folder and filename    
+    """
+
+
     red_thresh=randint(*min_max_red_thresh)
     dp=uniform(*min_max_db)
     min_dist_circle=randint(*min_max_dist)
@@ -90,7 +113,7 @@ def do_grid_search(imgpath, num):
         fw.write(jss)
 
 
-
+### Add imaes here with ABSOLUTE path
 images = [
     "/home/chubak/Downloads/drive-download-20220426T192319Z-001 (1)/1651000906467.jpg",
     "/home/chubak/Downloads/drive-download-20220426T192319Z-001 (1)/1651000906476.jpg",
@@ -105,6 +128,17 @@ images = [
 
 
 if __name__ == "__main__":
+    """
+    Runtime for grid search. Saves to the root prject foler under `~` 
+    (not to be confused with Linux home ~).
+
+    Args
+    ````
+    gs:
+        Gid search
+    gui:
+        Display the GUI    
+    """
     if sys.argv[1] == "gs":
         pbar = tqdm.tqdm(total=1500)
 

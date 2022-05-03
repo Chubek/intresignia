@@ -1,6 +1,7 @@
+from typing import List
+
 import cv2
 import numpy as np
-from typing import List
 
 
 def detect_circle(
@@ -10,7 +11,41 @@ def detect_circle(
         min_radius=5,
         max_radius=10,
         param_1=200,
-        param_2=20) -> np.array and np.array:
+        param_2=20) -> np.array:
+    """
+    Detect circle is the only shape detect function that is used in the final detect
+    function so it's the only one worth documenting.
+
+    And as far as documentation goes it's exactly what it says on the tin. 
+    This function uses Hough Transform to find circles through cv2.HoughCircles.
+
+    HoughCircles has two modes, `GRADIENT` and `GRADIENT_ALT`.
+    We use the former because the lattr is useless in our case.
+
+    This function needs a lot of tweaking to work.
+
+    Params
+    ------
+    img: np.array
+        The numpy array containing the image signals.
+    dp: float
+        inverse ratio of the accumulator resolution to the image resolution
+    min_dist: int
+        Minimum distance between detected circles.
+    min_radius: int
+        Minimum radius to be dtcected
+    max_radius: int
+        maximum radius to be detected
+    param_1: int
+        the higher threshold of the two passed to the Canny edge detector
+    
+    
+    Returns
+    -------
+        Circle locations: np.array([x, y, r])
+            
+    """
+    
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     normed = cv2.normalize(gray, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)

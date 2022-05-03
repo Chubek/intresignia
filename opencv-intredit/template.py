@@ -1,13 +1,11 @@
-from cv2 import line
-from skimage.metrics import structural_similarity
 import cv2
+import numpy as np
+from cv2 import line
+from skimage import img_as_float
+from skimage.metrics import structural_similarity as ssim
+
 import color
 from settings import Settings
-
-from skimage.metrics import structural_similarity as ssim
-from skimage import img_as_float
-
-import random
 
 img_temp_no_entry = cv2.imread("opencv-intredit/temp_img/no_entry.png")
 img_temp_no_wait = cv2.imread("opencv-intredit/temp_img/no_waiting.png")
@@ -32,7 +30,23 @@ color_ring = img_as_float(cv2.resize(color.enclose_red(img_temp_ring, st.color_l
                                                        st.color_high, st.red_thresh), (400, 400)))
 
 
-def get_max_sim(img, thresh=0.7):
+def get_max_sim(img: np.array, thresh=0.7) -> bool:
+    """
+    This functions purpose is to make sure signs are signs.
+
+    Param
+    -----
+        img: np.ndarray
+            The image numpy array
+        thresh:
+            The threshold for maximum SSIM score
+
+    Returns
+    -------
+        max_score: int
+        score_dict: Dict
+    """
+
     img = cv2.resize(img, (400, 400))
 
     img = img_as_float(img)

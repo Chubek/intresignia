@@ -1,8 +1,8 @@
 from fileinput import close
-import random
+from typing import List
+
 import cv2
 import numpy as np
-from typing import Tuple, List
 
 
 def enclose_red(img: np.array,
@@ -17,6 +17,8 @@ def enclose_red(img: np.array,
 
     Param
     -----
+    img: np.arrray:
+        The Numpy array containing the image signals.
     lower_threshold: Tuple[Tuple[int, int, int], Tuple[int, int, int]]
         The lowermost threshold in HSV values where H is from 0 to 180 and
         S and V are from 0 to 255 (unlike normal HSV where it's double)
@@ -33,6 +35,10 @@ def enclose_red(img: np.array,
     op: bool
         The image is put through normalization, brightening, saturating, opening
         and blurring if this is passed (prefrably on)
+
+    Returns
+        final_image: np.array
+            The filtered and thresholeded image (if chosen)
 
     """
     kernel = cv2.getStructuringElement(

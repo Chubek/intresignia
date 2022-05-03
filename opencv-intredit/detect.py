@@ -1,19 +1,35 @@
+import time
 from tkinter.messagebox import NO
+
 import cv2
-from cv2 import imshow
 import numpy as np
+from cv2 import imshow
 from scipy import rand
 
 import color
 import shape
-
+import template
 from settings import Settings
 
-import template
-
-import time
 
 def detect_intredit_signs(img_path: str, settings: Settings, pyrd=True) -> np.array:
+    """
+    This is the main detect function.
+
+    Params
+    ------
+        img_path: str
+            Path to img, relative or absolute, does not matter
+        settings: Settigngs
+            The settings object you created.
+        pyrd: bool
+            Whethet to pyrDown the image or not (derease qualiy and size.
+
+    Returns
+        Final image annotated: np.array    
+    """
+    
+    
     img = cv2.imread(img_path)
     
     if pyrd:

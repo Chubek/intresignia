@@ -1,5 +1,6 @@
+from typing import Optional, Tuple
+
 from pydantic import BaseModel
-from typing import Tuple, Optional
 
 
 class Settings(BaseModel):
@@ -23,7 +24,7 @@ class Settings(BaseModel):
     max_radius: Optional[int]
         Circle detection; maximum radius of the supposed circles
     param_1: Optional[int]
-        The first parameter for HOUGH_CIRCLES_GRADIENT method; the higher threshold of the two passed to the Canny edge detecto
+        The first parameter for HOUGH_CIRCLES_GRADIENT method; the higher threshold of the two passed to the Canny edge detector
     param_2: Optional[int]
         The second parameter for HOUGH_CIRCLES_GRADIENT method; he accumulator threshold for the circle centers at the detection stage
     thresh_temp: Optional[float] 
