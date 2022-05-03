@@ -4,16 +4,16 @@ from cv2 import line
 from skimage import img_as_float
 from skimage.metrics import structural_similarity as ssim
 
-import color
-from settings import Settings
+from . import color
+from . import settings
 
-img_temp_no_entry = cv2.imread("opencv-intredit/temp_img/no_entry.png")
-img_temp_no_wait = cv2.imread("opencv-intredit/temp_img/no_waiting.png")
-img_temp_ring = cv2.imread("opencv-intredit/temp_img/ring.png")
-img_temp_line = cv2.imread("opencv-intredit/temp_img/line.png")
+img_temp_no_entry = cv2.imread("intresignia/temp_img/no_entry.png")
+img_temp_no_wait = cv2.imread("intresignia/temp_img/no_waiting.png")
+img_temp_ring = cv2.imread("intresignia/temp_img/ring.png")
+img_temp_line = cv2.imread("intresignia/temp_img/line.png")
 
 
-st = Settings()
+st = settings.Settings()
 
 color_no_entry = img_as_float(cv2.resize(color.enclose_red(img_temp_no_entry, st.color_low,
                                                            st.color_high, st.red_thresh), (400, 400)))

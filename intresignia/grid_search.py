@@ -12,8 +12,8 @@ import tqdm
 from cv2 import DCT_ROWS
 from PIL import Image, ImageTk
 
-import detect
-import settings
+from . import detect
+from . import settings
 
 ### Adjust these to control the range of values
 min_max_red_thresh = (100, 150)

@@ -6,13 +6,13 @@ import numpy as np
 from cv2 import imshow
 from scipy import rand
 
-import color
-import shape
-import template
-from settings import Settings
+from . import color
+from . import shape
+from . import template
+from . import settings
 
 
-def detect_intredit_signs(img_path: str, settings: Settings, pyrd=True) -> np.array:
+def detect_intredit_signs(img_path: str, settings: settings.Settings, pyrd=True) -> np.array:
     """
     This is the main detect function.
 
