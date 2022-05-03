@@ -15,7 +15,7 @@ path = os.path.dirname(os.path.abspath(
 
 path_no_entry = os.path.join(path, "data", "no_entry.png")
 path_no_wait = os.path.join(path, "data", "no_waiting.png")
-path_ring = os.path.join(path, "data", "ing.png")
+path_ring = os.path.join(path, "data", "ring.png")
 path_line = os.path.join(path, "data", "line.png")
 
 
