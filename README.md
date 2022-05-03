@@ -34,7 +34,7 @@ from pprint import pprint
 
 st = Settings()
 
-det, ssim_scores, coords = detect.detect_intredit_signs("/path/to/img.png", st)
+det, ssim_scores, coords = detect_intredit_signs("/path/to/img.png", st)
 
 pprint(ssim_scores)
 pprint(coords)
