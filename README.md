@@ -27,7 +27,7 @@ This will install the package. Mind you that you need to install Python 3.10. It
 2. Create a new Python file and:
 
 ```python
-from intresignia.detect import detect
+from intresignia.detect import detect_intredit_signs
 from intresignia.settings import Settings
 import cv2
 from pprint import pprint
