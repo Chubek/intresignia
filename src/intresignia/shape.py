@@ -38,21 +38,21 @@ def detect_circle(
         maximum radius to be detected
     param_1: int
         the higher threshold of the two passed to the Canny edge detector
-    
-    
+
+
     Returns
     -------
         Circle locations: np.array([x, y, r])
-            
+
     """
-    
+
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     normed = cv2.normalize(gray, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
     kernel = cv2.getStructuringElement(
         shape=cv2.MORPH_ELLIPSE, ksize=(5, 5))
     opened = cv2.morphologyEx(normed, cv2.MORPH_OPEN, kernel)
-    
+
     thresh = cv2.adaptiveThreshold(opened, 255, 1, 1, 11, 2)
 
     kernel_size = 5

@@ -53,9 +53,9 @@ def get_max_sim(img: np.array, thresh=0.7) -> bool:
     comp_line = ssim(color_no_entry, img,
                      data_range=img.max() - img.min(), channel_axis=2)
     comp_nw = ssim(color_no_wait, img,
-                   data_range= img.max() -  img.min(), channel_axis=2)
+                   data_range=img.max() - img.min(), channel_axis=2)
     comp_ring = ssim(
-        color_line, img, data_range= img.max() -  img.min(), channel_axis=2)
+        color_line, img, data_range=img.max() - img.min(), channel_axis=2)
     comp_ne = ssim(color_ring, img,
                    data_range=img.max() - img.min(), channel_axis=2)
 

@@ -42,28 +42,28 @@ def enclose_red(img: np.array,
 
     """
     kernel = cv2.getStructuringElement(
-            shape=cv2.MORPH_ELLIPSE, ksize=(5, 5))
-    
+        shape=cv2.MORPH_ELLIPSE, ksize=(5, 5))
+
     hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     copy_img = img.copy()
 
-    if op:    
+    if op:
         copy_img[:, :, 0] = copy_img[:, :, 0] + 20
         copy_img[:, :, 2] = 255
 
-        normed = cv2.normalize(hsv_img, None, 0, 180, cv2.NORM_MINMAX, cv2.CV_8UC1)
-        
+        normed = cv2.normalize(hsv_img, None, 0, 180,
+                               cv2.NORM_MINMAX, cv2.CV_8UC1)
+
         opened = cv2.morphologyEx(normed, cv2.MORPH_OPEN, kernel)
         hsv_img = cv2.GaussianBlur(opened, (5, 5), 0)
 
-    
     lower_mask = cv2.inRange(hsv_img, lower_thrershold[0], lower_thrershold[1])
     upper_mask = cv2.inRange(hsv_img, upper_thrershold[0], upper_thrershold[1])
 
-    isolated = cv2.bitwise_and(copy_img, copy_img, mask=lower_mask + upper_mask)
+    isolated = cv2.bitwise_and(
+        copy_img, copy_img, mask=lower_mask + upper_mask)
     close = cv2.morphologyEx(isolated, cv2.MORPH_CLOSE, kernel)
     copy_img = cv2.GaussianBlur(close, (5, 5), 0)
-
 
     return np.where(copy_img > red_thresh, copy_img, 0)

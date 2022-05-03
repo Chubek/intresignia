@@ -30,18 +30,16 @@ def detect_intredit_signs(img_path: str, settings: settings.Settings, pyrd=True)
         Score dict: List 
             final SSIM score dict
     """
-    
-    
+
     img = cv2.imread(img_path)
-    
+
     if pyrd:
         img = cv2.pyrDown(img)
         img = cv2.resize(img, (1024, 768))
-   
 
     color_isolated = color.enclose_red(
         img, settings.color_low, settings.color_high, settings.red_thresh, op=settings.do_op)
-    
+
     circles = shape.detect_circle(
         color_isolated,
         settings.dp,
@@ -50,7 +48,7 @@ def detect_intredit_signs(img_path: str, settings: settings.Settings, pyrd=True)
         settings.max_radius,
         settings.param_1,
         settings.param_2)
-    
+
     if circles is None:
         raise ValueError("No circle-like shapes found")
 
@@ -76,7 +74,8 @@ def detect_intredit_signs(img_path: str, settings: settings.Settings, pyrd=True)
 
         y_nonzero, x_nonzero, _ = np.nonzero(img_cropped)
 
-        img_cropped = img_cropped[np.min(y_nonzero):np.max(y_nonzero), np.min(x_nonzero):np.max(x_nonzero)]
+        img_cropped = img_cropped[np.min(y_nonzero):np.max(
+            y_nonzero), np.min(x_nonzero):np.max(x_nonzero)]
 
         if img[y_left:y_right, x_left:x_right, :].shape[1] == 0:
             continue
@@ -85,8 +84,8 @@ def detect_intredit_signs(img_path: str, settings: settings.Settings, pyrd=True)
         dcts.append(dct)
         if temp == -1:
             continue
-    
-        cv2.circle(output, (x, y), r, (0, 255, 0), 4)        
+
+        cv2.circle(output, (x, y), r, (0, 255, 0), 4)
         coords.append((x, y, r))
 
     if len(dcts) == 0:

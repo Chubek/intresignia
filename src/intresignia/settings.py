@@ -42,6 +42,6 @@ class Settings(BaseModel):
     min_radius: Optional[int] = 2
     max_radius: Optional[int] = 250
     param_1: Optional[int] = 400
-    param_2: Optional[int] = 120    
+    param_2: Optional[int] = 120
     thresh_temp: Optional[float] = 0.65
     do_op: Optional[bool] = True
