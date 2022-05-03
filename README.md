@@ -19,7 +19,7 @@ This is a Python package that uses color thresholding and other classical vision
 ```bash
 python3.10 virtualenv venv
 source venv/bin/activate (on Linux) or venv/vin/activate.ps1 (Windows)
-python3.10 pip install git+https://github.com/chubek/opencv-intredit.git
+python3.10 pip install git+https://github.com/chubek/intresignia.git
 ```
 
 This will install the package. Mind you that you need to install Python 3.10. It does not use any of its feaures yet but it will pretty soon.
@@ -27,8 +27,8 @@ This will install the package. Mind you that you need to install Python 3.10. It
 2. Create a new Python file and:
 
 ```python
-from opencv_intredit.detect import detect
-from opencv_intredit.settings import Settings
+from intresignia.detect import detect
+from intresignia.settings import Settings
 import cv2
 from pprint import pprint
 
