@@ -7,10 +7,10 @@ from skimage.metrics import structural_similarity as ssim
 from . import color
 from . import settings
 
-img_temp_no_entry = cv2.imread("intresignia/temp_img/no_entry.png")
-img_temp_no_wait = cv2.imread("intresignia/temp_img/no_waiting.png")
-img_temp_ring = cv2.imread("intresignia/temp_img/ring.png")
-img_temp_line = cv2.imread("intresignia/temp_img/line.png")
+img_temp_no_entry = cv2.imread("./data/no_entry.png")
+img_temp_no_wait = cv2.imread("./data/no_waiting.png")
+img_temp_ring = cv2.imread("./data/ring.png")
+img_temp_line = cv2.imread("./data/line.png")
 
 
 st = settings.Settings()
