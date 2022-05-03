@@ -57,6 +57,7 @@ def detect_intredit_signs(img_path: str, settings: Settings, pyrd=True) -> np.ar
     output = img.copy()
 
     dcts = []
+    coords = []
 
     for circle in circles:
         x, y, r = circle
@@ -86,8 +87,9 @@ def detect_intredit_signs(img_path: str, settings: Settings, pyrd=True) -> np.ar
             continue
     
         cv2.circle(output, (x, y), r, (0, 255, 0), 4)        
-     
+        coords.append((x, y, r))
+
     if len(dcts) == 0:
         raise ValueError("No signs detected")
 
-    return output, dcts
+    return output, dcts, coords
