@@ -1,6 +1,6 @@
 # Intresignia
 
-[![CircleCI](https://circleci.com/gh/Chubek/opencv-intredit/tree/master.svg?style=shield)](https://circleci.com/gh/Chubek/opencv-intredit/tree/master)
+[![CircleCI](https://circleci.com/gh/Chubek/opencv-intredit/tree/master.svg?style=shield)](https://circleci.com/gh/Chubek/intresignia/tree/master)
 
 ## Status
 * **Verson 0.0.1beta** [Current]-> Detection done.
