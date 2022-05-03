@@ -1,16 +1,28 @@
+import inspect
+import os
+
 import cv2
 import numpy as np
 from cv2 import line
 from skimage import img_as_float
 from skimage.metrics import structural_similarity as ssim
 
-from . import color
-from . import settings
+from . import color, settings
 
-img_temp_no_entry = cv2.imread("./data/no_entry.png")
-img_temp_no_wait = cv2.imread("./data/no_waiting.png")
-img_temp_ring = cv2.imread("./data/ring.png")
-img_temp_line = cv2.imread("./data/line.png")
+path = os.path.dirname(os.path.abspath(
+    inspect.getfile(inspect.currentframe())))
+
+
+path_no_entry = os.path.join(path, "data", "no_entry.png")
+path_no_wait = os.path.join(path, "data", "no_waiting.png")
+path_ring = os.path.join(path, "data", "ing.png")
+path_line = os.path.join(path, "data", "line.png")
+
+
+img_temp_no_entry = cv2.imread(path_no_entry)
+img_temp_no_wait = cv2.imread(path_no_wait)
+img_temp_ring = cv2.imread(path_ring)
+img_temp_line = cv2.imread(path_line)
 
 
 st = settings.Settings()
