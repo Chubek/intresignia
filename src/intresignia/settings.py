@@ -48,3 +48,4 @@ class Settings(BaseModel):
     do_op_hsv: Optional[bool] = True
     do_op_circle: Optional[bool] = True
     add_hue: Optional[int] = 20
+    do_classify: Optional[bool] = True

@@ -96,6 +96,10 @@ def intresignia_detect(img_path: str, settings: settings.Settings, pyrd=True) ->
         
         print("Shape detected, adding to list...")
         cv2.circle(output, (x, y), r, (0, 255, 0), 4)
+
+        if settings.do_classify:
+            cv2.putText(output, temp, color=(0, 255, 0), thickness=2, org=(x + r, y + r))
+
         coords.append((x, y, r))
     
     if len(coords) == 0:
