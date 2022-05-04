@@ -21,9 +21,7 @@ def automatic_brightness_and_contrast(image, clip_hist_percent=25):
     beta: float
     """
 
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
-    gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     hist = cv2.calcHist([gray], [0], None, [256], [0, 256])
     hist_size = len(hist)
@@ -49,7 +47,5 @@ def automatic_brightness_and_contrast(image, clip_hist_percent=25):
     beta = -minimum_gray * alpha
 
     auto_result = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
-
-    auto_result = cv2.cvtColor(auto_result, cv2.COLOR_RGB2BGR)
 
     return auto_result, alpha, beta

@@ -43,7 +43,7 @@ class Settings(BaseModel):
     max_radius: Optional[int] = 250
     param_1: Optional[int] = 400
     param_2: Optional[int] = 120
-    thresh_temp: Optional[float] = 0.65
+    thresh_temp: Optional[float] = 0.85
     do_op: Optional[bool] = True
     do_op_circle: Optional[bool] = True
-    add_hue: Optional[int] = 60
+    add_hue: Optional[int] = 20
