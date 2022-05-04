@@ -62,7 +62,7 @@ def detect_circle(
         circles = np.round(circles[0, :]).astype("int")
         return circles
 
-    return None
+    return []
 
 
 def detect_line(img: np.array,
