@@ -58,7 +58,7 @@ def detect_circle(
 
         thresh = cv2.adaptiveThreshold(closed, 255, 1, 1, 11, 2)
 
-        blur_opened = cv2.GaussianBlur(thresh, kernel, 0)
+        blur_opened = cv2.GaussianBlur(thresh, (4, 4), 0)
 
         gray = blur_opened
 
