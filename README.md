@@ -27,14 +27,13 @@ This will install the package. Mind you that you need to install Python 3.10. It
 2. Create a new Python file and:
 
 ```python
-from intresignia.detect import detect_intredit_signs
-from intresignia.settings import Settings
+from intresignia import Settings, intresignia_detect
 import cv2
 from pprint import pprint
 
 st = Settings()
 
-det, ssim_scores, coords = detect_intredit_signs("/path/to/img.png", st)
+det, ssim_scores, coords, color_isolated = intresignia_detect("/path/to/img.png", st)
 
 pprint(ssim_scores)
 pprint(coords)
