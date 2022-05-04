@@ -37,7 +37,7 @@ def intresignia_detect(img_path: str, settings: settings.Settings, pyrd=True) ->
         print("Pyring down the image as pyrd=True...")
         img = cv2.pyrDown(img)
         img = cv2.resize(img, (1024, 768))
-
+    print("Isolating the color red based on your settings...")
     color_isolated = color.enclose_red(
         img, settings.color_low,
         settings.color_high, settings.red_thresh,
