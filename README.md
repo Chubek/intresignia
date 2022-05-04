@@ -4,7 +4,7 @@
 
 ## Status
 * **Verson 0.0.1beta** [Current]-> Detection done.
-* **Verson 0.0.2beta** [Upcoming]-> Recognition and Classification TBA.
+* **Verson 0.0.3beta** [Upcoming]-> Recognition and Classification TBA.
 
 
 ## What is this?
