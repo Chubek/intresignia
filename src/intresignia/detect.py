@@ -99,7 +99,7 @@ def intresignia_detect(img_path: str, settings: settings.Settings, pyrd=True) ->
 
         if settings.do_classify:
             cv2.putText(output, temp, 
-            fontFace=cv2.FONT_HERSHEY_COMPLEX, 
+            fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=1,
             color=(0, 255, 0), thickness=2, org=(x + r, y + r))
 
         coords.append((x, y, r))
