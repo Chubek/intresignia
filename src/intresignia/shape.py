@@ -48,21 +48,11 @@ def detect_circle(
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    normed = cv2.normalize(gray, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
-    kernel = cv2.getStructuringElement(
-        shape=cv2.MORPH_ELLIPSE, ksize=(5, 5))
-    opened = cv2.morphologyEx(normed, cv2.MORPH_OPEN, kernel)
-
-    thresh = cv2.adaptiveThreshold(opened, 255, 1, 1, 11, 2)
-
-    kernel_size = 5
-    blur_opened = cv2.GaussianBlur(thresh, (kernel_size, kernel_size), 0)
-
     circles = cv2.HoughCircles(
-        blur_opened,
+        gray,
         cv2.HOUGH_GRADIENT,
-        dp,
-        min_dist,
+        dp=dp,
+        minDist=min_dist,
         minRadius=min_radius,
         maxRadius=max_radius,
         param1=param_1,

@@ -42,7 +42,7 @@ def enclose_red(img: np.array,
 
     """
     kernel = cv2.getStructuringElement(
-        shape=cv2.MORPH_ELLIPSE, ksize=(5, 5))
+        shape=cv2.MORPH_ELLIPSE, ksize=(9, 9))
 
     hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 

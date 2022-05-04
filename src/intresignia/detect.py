@@ -49,9 +49,6 @@ def detect_intredit_signs(img_path: str, settings: settings.Settings, pyrd=True)
         settings.param_1,
         settings.param_2)
 
-    if circles is None:
-        raise ValueError("No circle-like shapes found")
-
     output = img.copy()
 
     dcts = []
@@ -88,7 +85,5 @@ def detect_intredit_signs(img_path: str, settings: settings.Settings, pyrd=True)
         cv2.circle(output, (x, y), r, (0, 255, 0), 4)
         coords.append((x, y, r))
 
-    if len(dcts) == 0:
-        raise ValueError("No signs detected")
 
-    return output, dcts, coords
+    return output, dcts, coords, color_isolated
