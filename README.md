@@ -4,6 +4,7 @@
 
 ## Status
 * **Verson 0.0.1beta** [Current]-> Detection done.
+* **Verson 0.0.2beta** [Current]-> Improved magnificantly, with a lot of stuff added, including preliminary classification and loads of parameters.
 * **Verson 0.0.2beta** [Upcoming]-> Recognition and Classification TBA.
 
 
