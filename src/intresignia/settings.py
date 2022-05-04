@@ -46,3 +46,4 @@ class Settings(BaseModel):
     thresh_temp: Optional[float] = 0.65
     do_op: Optional[bool] = True
     do_op_circle: Optional[bool] = True
+    add_hue: Optional[int] = 60

@@ -49,7 +49,8 @@ def detect_intredit_signs(img_path: str, settings: settings.Settings, pyrd=True)
         settings.max_radius,
         settings.param_1,
         settings.param_2,
-        settings.do_op_circle)
+        settings.do_op_circle,
+        settings.add_hue)
 
     output = img.copy()
 
