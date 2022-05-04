@@ -39,7 +39,10 @@ def detect_intredit_signs(img_path: str, settings: settings.Settings, pyrd=True)
         img = cv2.resize(img, (1024, 768))
 
     color_isolated = color.enclose_red(
-        img, settings.color_low, settings.color_high, settings.red_thresh, op=settings.do_op)
+        img, settings.color_low, 
+        settings.color_high, settings.red_thresh,
+        op=settings.do_op,
+        add_hue=settings.add_hue)
 
     circles = shape.detect_circle(
         color_isolated,
@@ -49,8 +52,8 @@ def detect_intredit_signs(img_path: str, settings: settings.Settings, pyrd=True)
         settings.max_radius,
         settings.param_1,
         settings.param_2,
-        settings.do_op_circle,
-        settings.add_hue)
+        settings.do_op_circle
+        )
 
     output = img.copy()
 
