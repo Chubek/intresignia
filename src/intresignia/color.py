@@ -11,7 +11,8 @@ def enclose_red(img: np.array,
                 lower_thrershold=((120, 50, 50), (150, 255, 255)),
                 upper_thrershold=((175, 60, 50), (180, 255, 255)),
                 red_thresh=125,
-                op=False,
+                op_brighten=False,
+                op_brighten_hsv=True,
                 add_hue=40) -> np.array:
     """
     This function takes four arguments and isolates the red color. The red
@@ -50,10 +51,12 @@ def enclose_red(img: np.array,
 
     copy_img = img.copy()
 
-    if op:
+    if op_brighten:
         img, _, _ = auto_brighten.automatic_brightness_and_contrast(img)
 
         hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        
+    if op_brighten_hsv:
         hsv_img[:, :, 0] = np.where(
             (hsv_img[:, :, 0] > 100 - add_hue) &
             (hsv_img[:, :, 0] < 100 + (add_hue * 2)),

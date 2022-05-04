@@ -41,7 +41,8 @@ def intresignia_detect(img_path: str, settings: settings.Settings, pyrd=True) ->
     color_isolated = color.enclose_red(
         img, settings.color_low, 
         settings.color_high, settings.red_thresh,
-        op=settings.do_op,
+        op_brighten=settings.do_op,
+        op_brighten_hsv=settings.do_op_hsv,
         add_hue=settings.add_hue)
 
     circles = shape.detect_circle(
