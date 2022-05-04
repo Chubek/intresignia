@@ -39,7 +39,7 @@ def intresignia_detect(img_path: str, settings: settings.Settings, pyrd=True) ->
         img = cv2.resize(img, (1024, 768))
 
     color_isolated = color.enclose_red(
-        img, settings.color_low, 
+        img, settings.color_low,
         settings.color_high, settings.red_thresh,
         op_brighten=settings.do_op,
         op_brighten_hsv=settings.do_op_hsv,
@@ -54,7 +54,7 @@ def intresignia_detect(img_path: str, settings: settings.Settings, pyrd=True) ->
         settings.param_1,
         settings.param_2,
         settings.do_op_circle
-        )
+    )
 
     output = img.copy()
 
@@ -93,18 +93,20 @@ def intresignia_detect(img_path: str, settings: settings.Settings, pyrd=True) ->
         if temp == -1:
             print("Could not detect any of the sign shapes based on given templates...")
             continue
-        
+
         print("Shape detected, adding to list...")
         cv2.circle(output, (x, y), r, (0, 255, 0), 4)
 
         if settings.do_classify:
-            cv2.putText(output, temp, color=(0, 255, 0), thickness=2, org=(x + r, y + r))
+            cv2.putText(output, temp, 
+            fontFace=cv2.FONT_HERSHEY_COMPLEX, 
+            color=(0, 255, 0), thickness=2, org=(x + r, y + r))
 
         coords.append((x, y, r))
-    
+
     if len(coords) == 0:
         print("Warning: No signs detected, output image won't have any marks...")
 
     print("Done! Returning the output image, scores, sign coordinates and isolated color.")
-    
+
     return output, dcts, coords, color_isolated
