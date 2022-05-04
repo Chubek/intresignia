@@ -82,7 +82,7 @@ def do_grid_search(imgpath, num):
         w_extrema=w_extrema
     )
 
-    res, dcts = detect.detect_intredit_signs(imgpath, st)
+    res, dcts = detect.intresignia_detect(imgpath, st)
 
     os.makedirs(f"~/results/{num}")
 

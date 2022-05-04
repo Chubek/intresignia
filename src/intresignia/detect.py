@@ -12,7 +12,7 @@ from . import template
 from . import settings
 
 
-def detect_intredit_signs(img_path: str, settings: settings.Settings, pyrd=True) -> np.array:
+def intresignia_detect(img_path: str, settings: settings.Settings, pyrd=True) -> np.array:
     """
     This is the main detect function.
 
