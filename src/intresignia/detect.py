@@ -34,6 +34,7 @@ def detect_intredit_signs(img_path: str, settings: settings.Settings, pyrd=True)
     img = cv2.imread(img_path)
 
     if pyrd:
+        print("Pyring down the image as pyrd=True...")
         img = cv2.pyrDown(img)
         img = cv2.resize(img, (1024, 768))
 
@@ -47,14 +48,19 @@ def detect_intredit_signs(img_path: str, settings: settings.Settings, pyrd=True)
         settings.min_radius,
         settings.max_radius,
         settings.param_1,
-        settings.param_2)
+        settings.param_2,
+        settings.do_op_circle)
 
     output = img.copy()
 
     dcts = []
     coords = []
 
-    for circle in circles:
+    print(f"Found {len(circles)} circles...")
+
+    for i, circle in enumerate(circles):
+        print(f"Operating on circle {i + 1}/{len(circles)}...")
+
         x, y, r = circle
 
         if y >= r:
@@ -80,10 +86,16 @@ def detect_intredit_signs(img_path: str, settings: settings.Settings, pyrd=True)
         temp, dct = template.get_max_sim(img_cropped, settings.thresh_temp)
         dcts.append(dct)
         if temp == -1:
+            print("Could not detect any of the sign shapes based on given templates...")
             continue
-
+        
+        print("Shape detected, adding to list...")
         cv2.circle(output, (x, y), r, (0, 255, 0), 4)
         coords.append((x, y, r))
+    
+    if len(coords) == 0:
+        print("Warning: No signs detected, output image won't have any marks...")
 
-
+    print("Done! Returning the output image, scores, sign coordinates and isolated color.")
+    
     return output, dcts, coords, color_isolated

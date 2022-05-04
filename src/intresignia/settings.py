@@ -45,3 +45,4 @@ class Settings(BaseModel):
     param_2: Optional[int] = 120
     thresh_temp: Optional[float] = 0.65
     do_op: Optional[bool] = True
+    do_op_circle: Optional[bool] = True

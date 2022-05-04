@@ -11,7 +11,8 @@ def detect_circle(
         min_radius=5,
         max_radius=10,
         param_1=200,
-        param_2=20) -> np.array:
+        param_2=20,
+        op=True) -> np.array:
     """
     Detect circle is the only shape detect function that is used in the final detect
     function so it's the only one worth documenting.
@@ -48,11 +49,24 @@ def detect_circle(
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
+    if op:
+        normed = cv2.normalize(
+            gray, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
+        kernel = cv2.getStructuringElement(
+            shape=cv2.MORPH_ELLIPSE, ksize=(8, 8))
+        closed = cv2.morphologyEx(normed, cv2.MORPH_CLOSE, kernel)
+
+        thresh = cv2.adaptiveThreshold(closed, 255, 1, 1, 11, 2)
+
+        blur_opened = cv2.GaussianBlur(thresh, kernel, 0)
+
+        gray = blur_opened
+
     circles = cv2.HoughCircles(
         gray,
         cv2.HOUGH_GRADIENT,
-        dp=dp,
-        minDist=min_dist,
+        dp,
+        min_dist,
         minRadius=min_radius,
         maxRadius=max_radius,
         param1=param_1,
