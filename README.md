@@ -8,6 +8,14 @@
 * [**Verson 0.0.3beta**](https://github.com/Chubek/intresignia/tree/ver0.0.3b-dev) [InDev]-> Recognition and Classification TBA.
 
 
+
+## Quick Test
+
+Test 0.0.2beta here:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Chubek/chubek/blob/master/detect_nb.ipynb)
+
+
+
 ## What is this?
 
 This is a Python package that uses color thresholding and other classical vision methods through OpenCV to detect a subset of intredit (prohibition) traffic signs. It will detect and classify any sign that is red.
