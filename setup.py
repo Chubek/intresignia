@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='intresignia',
-    version='0.0.2beta',
+    version='0.0.3beta',
     author = "Chubak Bidpaa",
     description = "Intredit traffic sign detection and classifier",
     url = "https://github.com/chubek/intresignia",
