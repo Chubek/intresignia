@@ -3,9 +3,9 @@
 [![CircleCI](https://circleci.com/gh/Chubek/intresignia/tree/master.svg?style=shield)](https://circleci.com/gh/Chubek/intresignia/tree/master)
 
 ## Status
-* **Verson 0.0.1beta** [Current]-> Detection done.
-* **Verson 0.0.2beta** [Current]-> Improved magnificantly, with a lot of stuff added, including preliminary classification and loads of parameters.
-* **Verson 0.0.2beta** [Upcoming]-> Recognition and Classification TBA.
+* [**Verson 0.0.1beta**](https://github.com/Chubek/intresignia/tree/ver0.0.1b) [Deprecated]-> Detection done.
+* [**Verson 0.0.2beta**](https://github.com/Chubek/intresignia/tree/ver0.0.2b) [Current]-> Improved magnificantly, with a lot of stuff added, including preliminary classification and loads of parameters.
+* [**Verson 0.0.3beta**](https://github.com/Chubek/intresignia/tree/ver0.0.3b-dev) [InDev]-> Recognition and Classification TBA.
 
 
 ## What is this?
