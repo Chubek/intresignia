@@ -12,6 +12,7 @@
 ## Quick Test
 
 Test 0.0.2beta here:
+
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Chubek/chubek/blob/master/detect_nb.ipynb)
 
 
