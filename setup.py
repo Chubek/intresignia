@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='intresignia',
-    version='0.0.2beta',
+    version='0.0.3beta',
     author = "Chubak Bidpaa",
     description = "Intredit traffic sign detection and classifier",
     url = "https://github.com/chubek/intresignia",
@@ -17,5 +17,5 @@ setup(
         'pillow',
     ],
     package_dir={'intresignia': 'src/intresignia'},
-    package_data = {"intresignia": ["data/*.png"]}
+    package_data = {"intresignia": ["data/*.png", "matches/*.png"]}
 )

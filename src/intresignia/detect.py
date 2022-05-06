@@ -9,10 +9,11 @@ from scipy import rand
 from . import color
 from . import shape
 from . import template
-from . import settings
+from . import settings as st
+from . import matcher
 
 
-def intresignia_detect(img_path: str, settings: settings.Settings, pyrd=True) -> np.array:
+def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.array:
     """
     This is the main detect function.
 
@@ -88,8 +89,13 @@ def intresignia_detect(img_path: str, settings: settings.Settings, pyrd=True) ->
         if img[y_left:y_right, x_left:x_right, :].shape[1] == 0:
             continue
 
-        temp, dct = template.get_max_sim(img_cropped, settings.thresh_temp)
+        if settings.classifier == st.ClassifierType.ORB:
+            temp, dct = matcher.orb_matcher(img_cropped, settings.thresh_temp)
+        else:
+            temp, dct = template.get_max_sim(img_cropped, settings.thresh_temp)
+
         dcts.append(dct)
+
         if temp == -1:
             print("Could not detect any of the sign shapes based on given templates...")
             continue
@@ -98,9 +104,10 @@ def intresignia_detect(img_path: str, settings: settings.Settings, pyrd=True) ->
         cv2.circle(output, (x, y), r, (0, 255, 0), 4)
 
         if settings.do_classify:
-            cv2.putText(output, temp, 
-            fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=1,
-            color=(0, 255, 0), thickness=2, org=(x - r, y - r))
+            print("DoClassify enabled, marking classification...")
+            cv2.putText(output, temp,
+                        fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=0.5,
+                        color=(0, 255, 0), thickness=2, org=(x - r, y - r))
 
         coords.append((x, y, r))
 
