@@ -1,12 +1,10 @@
-from ctypes import Union
-from typing import Dict
-import cv2
-import numpy as np
-from glob import glob
-
 import inspect
 import os
+from glob import glob
+from typing import Dict, Union
 
+import cv2
+import numpy as np
 
 path = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))

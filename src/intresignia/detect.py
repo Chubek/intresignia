@@ -6,11 +6,9 @@ import numpy as np
 from cv2 import imshow
 from scipy import rand
 
-from . import color
-from . import shape
-from . import template
+from . import color, matcher
 from . import settings as st
-from . import matcher
+from . import shape, template
 
 
 def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.array:

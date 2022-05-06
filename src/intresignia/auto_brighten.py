@@ -1,4 +1,3 @@
-from enum import auto
 import cv2
 
 

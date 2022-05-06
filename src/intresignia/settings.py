@@ -1,12 +1,11 @@
-from msilib.schema import Class
+from enum import Enum
 from typing import Optional, Tuple
 
 from pydantic import BaseModel
-from enum import Enum
 
 
 class ClassifierType(str, Enum):
-    ORB = 'ORB',
+    ORB = 'ORB'
     SSID = 'SSID'
 
 
