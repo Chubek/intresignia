@@ -4,8 +4,8 @@
 
 ## Status
 * [**Verson 0.0.1beta**](https://github.com/Chubek/intresignia/tree/ver0.0.1b) [Deprecated]-> Detection done.
-* [**Verson 0.0.2beta**](https://github.com/Chubek/intresignia/tree/ver0.0.2b) [Current]-> Improved magnificantly, with a lot of stuff added, including preliminary classification and loads of parameters.
-* [**Verson 0.0.3beta**](https://github.com/Chubek/intresignia/tree/ver0.0.3b-dev) [InDev]-> Recognition and Classification TBA.
+* [**Verson 0.0.2beta**](https://github.com/Chubek/intresignia/tree/ver0.0.2b) [Deprecated]-> Improved magnificantly, with a lot of stuff added, including preliminary classification and loads of parameters.
+* [**Verson 0.0.3beta**](https://github.com/Chubek/intresignia/tree/ver0.0.3b) [Current]-> Recognition and Classification TBA.
 
 
 
