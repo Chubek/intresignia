@@ -80,7 +80,10 @@ def get_max_sim(img: np.array, thresh=0.7) -> bool:
 
     mx = max(dct, key=dct.get)
 
+    print("Got a max score of {mx}...")
+
     if dct[max(dct, key=dct.get)] < thresh:
-        return -1, None
+        print("Threshold larger than max score")
+        return -1, dct
 
     return mx, dct
