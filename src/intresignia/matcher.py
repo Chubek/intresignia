@@ -84,10 +84,10 @@ def orb_matcher(img: np.array, threshold=60) -> Union[str, Dict]:
 
     max_ = max(scores_mean, key=scores_mean.get)
 
-    print("Got a max score of {max_}...")
+    print(f"Got a max score of {scores_mean[max_]} which belongs to {classes[max_]}...")
 
     if scores_mean[max_] < threshold:
         print("Threshold larger than max mean score...")
         -1, scores_mean
 
-    return classes[k], scores_mean
+    return classes[max_], scores_mean
