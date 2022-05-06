@@ -1,6 +1,13 @@
+from msilib.schema import Class
 from typing import Optional, Tuple
 
 from pydantic import BaseModel
+from enum import Enum
+
+
+class ClassifierType(str, Enum):
+    ORB = 'ORB',
+    SSID = 'SSID'
 
 
 class Settings(BaseModel):
@@ -49,3 +56,7 @@ class Settings(BaseModel):
     do_op_circle: Optional[bool] = True
     add_hue: Optional[int] = 20
     do_classify: Optional[bool] = True
+    classifier: Optional[ClassifierType] = ClassifierType.ORB
+
+    class Config:
+        use_enum_values = True

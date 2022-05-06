@@ -17,5 +17,5 @@ setup(
         'pillow',
     ],
     package_dir={'intresignia': 'src/intresignia'},
-    package_data = {"intresignia": ["data/*.png"]}
+    package_data = {"intresignia": ["data/*.png", "matches/*.png"]}
 )
