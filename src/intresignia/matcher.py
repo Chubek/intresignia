@@ -1,6 +1,5 @@
 import inspect
 import os
-from glob import glob
 from typing import Dict, Union
 
 import cv2
@@ -12,7 +11,9 @@ path = os.path.dirname(os.path.abspath(
 
 path_matchers = os.path.join(path, 'matchers')
 
-imgs_temp = glob(os.path.join(path_matchers, "*.png"))
+imgs_temp = [name for name in os.listdir(path_matchers) if name.endswith(".png")]
+
+print(f"Loaded {len(imgs_temp)} images to be used for matching")
 
 classes = {
     "bike_no_access_old.png": "No Acces for Bikes (Old)",
