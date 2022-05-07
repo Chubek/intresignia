@@ -81,8 +81,8 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         else:
             x_left, x_right = x, x + r
 
-        img_cropped = color_isolated[y_left - 5:y_right + 5, 
-                                        x_left - 5:x_right + 5, :]
+        img_cropped = img[y_left - 15:y_right + 15, 
+                                        x_left - 15:x_right + 15, :]
 
         y_nonzero, x_nonzero, _ = np.nonzero(img_cropped)
 
