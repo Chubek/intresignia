@@ -1,5 +1,5 @@
+from settings import MatchNorm, ClassiferAggMode
 import inspect
-from msilib.schema import Class
 import os
 from tkinter.tix import MAX
 from typing import Dict, Union
@@ -10,11 +10,11 @@ import numpy as np
 path = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
 
-from settings import MatchNorm, ClassiferAggMode
 
 path_matchers = os.path.join(path, 'matchers')
 
-imgs_temp = [os.path.join(path_matchers, name) for name in os.listdir(path_matchers) if name.endswith(".png")]
+imgs_temp = [os.path.join(path_matchers, name) for name in os.listdir(
+    path_matchers) if name.endswith(".png")]
 
 print(f"Loaded {len(imgs_temp)} images to be used for matching")
 
@@ -66,8 +66,7 @@ classes = {
 queries_imgs = {k.split("/")[-1]: cv2.imread(k, 0) for k in imgs_temp}
 orb = cv2.ORB_create()
 queries_descriptors = {k: orb.detectAndCompute(
-            v, None)[1] for k, v in queries_imgs.items()}
-
+    v, None)[1] for k, v in queries_imgs.items()}
 
 
 def orb_matcher(img: np.array, threshold=60, norm=MatchNorm.HAMMING, mode=ClassiferAggMode) -> Union[str, Dict]:
@@ -92,7 +91,6 @@ def orb_matcher(img: np.array, threshold=60, norm=MatchNorm.HAMMING, mode=Classi
     elif norm == MatchNorm.MINMAX:
         matcher = cv2.BFMatcher(cv2.NORM_MINMAX, crossCheck=True)
 
-
     mode_func = np.mean
 
     print(f"Selecting mode {mode}...")
@@ -111,7 +109,7 @@ def orb_matcher(img: np.array, threshold=60, norm=MatchNorm.HAMMING, mode=Classi
 
     img = cv2.resize(img, (350, 350))
 
-    kernel = np.array([[-1,-1,-1], [-1,9,-1], [-1,-1,-1]])
+    kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
     img = cv2.filter2D(img, -1, kernel)
 
     _, img_descriptors = orb.detectAndCompute(img, None)
@@ -127,7 +125,8 @@ def orb_matcher(img: np.array, threshold=60, norm=MatchNorm.HAMMING, mode=Classi
 
     max_ = max(scores_agg, key=scores_agg.get)
 
-    print(f"Got a aggregate score of {scores_agg[max_]} which belongs to {classes[max_]}...")
+    print(
+        f"Got a aggregate score of {scores_agg[max_]} which belongs to {classes[max_]}...")
 
     if scores_agg[max_] < threshold:
         print("Threshold larger than max mean score...")
