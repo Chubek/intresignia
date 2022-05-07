@@ -92,7 +92,7 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
             temp, dct = matcher.orb_matcher(img_cropped,
                                             settings.classifier_threshold,
                                             settings.classifier_norm,
-                                            settings.classifer_agg)
+                                            settings.classifier_aggmode)
         else:
             temp, dct = template.get_max_sim(img_cropped, settings.thresh_temp)
 
