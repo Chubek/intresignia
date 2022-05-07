@@ -10,8 +10,10 @@ from . import color, matcher
 from . import settings as st
 from . import shape, template
 from . import auto_brighten
+from . import utils
 
 KERNEL = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
+
 
 def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.array:
     """
@@ -64,6 +66,8 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
     cropped = {}
     all_det = []
 
+    h, w, _ = img.shape
+
     print(f"Found {len(circles)} circles...")
 
     for i, circle in enumerate(circles):
@@ -81,26 +85,35 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         else:
             x_left, x_right = x, x + r
 
-        img_cropped = img[y_left - 15:y_right + 15, 
-                                        x_left - 15:x_right + 15, :]
-
-        y_nonzero, x_nonzero, _ = np.nonzero(img_cropped)
-
-        img_cropped = img_cropped[np.min(y_nonzero):np.max(
-            y_nonzero), np.min(x_nonzero):np.max(x_nonzero)]
-
         if img[y_left:y_right, x_left:x_right, :].shape[1] == 0:
             continue
 
+        img_cropped = color_isolated[y_left - 5:y_right + 5,
+                                     x_left - 5:x_right + 5, :]
+
+        h_c, w_c, _ = img_cropped.shape
+
+        y_nonzero, x_nonzero, _ = np.nonzero(img_cropped)
+
+        cd = st.Coords(x1=utils.proportion(np.min(x_nonzero), w_c, w),
+                       x2=utils.proportion(np.max(x_nonzero), w_c, w),
+                       y1=utils.proportion(np.min(y_nonzero), h_c, h),
+                       y2=utils.proportion(np.max(y_nonzero), h_c, h)
+
+        )
+
+        img_cropped = img_cropped[cd.y1:cd.y2, cd.x1:cd.x2]
+
         img_cropped = cv2.resize(img_cropped, (400, 400))
 
-        img_cropped = cv2.GaussianBlur(img_cropped, (5,5), 
-                    cv2.BORDER_DEFAULT)
+        img_cropped = cv2.GaussianBlur(img_cropped, (5, 5),
+                                       cv2.BORDER_DEFAULT)
         img_cropped = cv2.filter2D(img_cropped, -1, KERNEL)
         img_cropped = cv2.detailEnhance(img_cropped)
 
         try:
-            img_cropped, _, _ = auto_brighten.automatic_brightness_and_contrast(img_cropped)
+            img_cropped, _, _ = auto_brighten.automatic_brightness_and_contrast(
+                img_cropped)
         except:
             pass
 
@@ -112,22 +125,21 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         else:
             temp, dct = template.get_max_sim(img_cropped, settings.thresh_temp)
 
-        
         if temp == -1:
             print("Could not detect any of the sign shapes based on given templates...")
             continue
 
         print("Shape detected, adding to list...")
-        cv2.circle(output, (x, y), r, (0, 255, 0), 4)
+        cv2.rectangle(output, (cd.x1, cd.y1), (cd.x2, cd.y2), (0, 255, 0), thickness=2)
 
         if settings.do_classify:
             print("DoClassify enabled, marking classification...")
             cv2.putText(output, temp,
-                        fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=1.5,
-                        color=(0, 255, 0), thickness=2, org=(x - (r * 2), y - (r * 2)))
-        
+                        fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=0.5,
+                        color=(0, 200, 0), thickness=2, org=(cd.x2, cd.y2))
+
         temp = f"{i + 1} - {temp}"
-        coords[temp] = (x, y, r)
+        coords[temp] = coords
         dcts[temp] = dct
         cropped[temp] = img_cropped
         all_det.append(temp)

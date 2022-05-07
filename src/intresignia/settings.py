@@ -83,3 +83,10 @@ class Settings(BaseModel):
 
     class Config:
         use_enum_values = True
+
+
+class Coords(BaseModel):
+    y1: int
+    y2: int
+    x1: int
+    x2: int
