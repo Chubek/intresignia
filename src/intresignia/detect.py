@@ -9,7 +9,7 @@ from scipy import rand
 from . import color, matcher
 from . import settings as st
 from . import shape, template
-
+from . import auto_brighten
 
 def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.array:
     """
@@ -59,6 +59,7 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
 
     dcts = []
     coords = []
+    cropped = []
 
     print(f"Found {len(circles)} circles...")
 
@@ -87,6 +88,15 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
 
         if img[y_left:y_right, x_left:x_right, :].shape[1] == 0:
             continue
+
+        img_cropped = cv2.resize(img, (300, 300))
+
+        kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
+        img_cropped = cv2.GaussianBlur(img_cropped, (5,5), cv2.BORDER_DEFAULT)
+        img_cropped = cv2.filter2D(img_cropped, -1, kernel)
+        img_cropped = auto_brighten.automatic_brightness_and_contrast(img_cropped)
+
+        cropped.append(img_cropped)
 
         if settings.classifier == st.ClassifierType.ORB:
             temp, dct = matcher.orb_matcher(img_cropped,
@@ -118,4 +128,4 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
 
     print("Done! Returning the output image, scores, sign coordinates and isolated color.")
 
-    return output, dcts, coords, color_isolated
+    return output, dcts, coords, color_isolated, cropped

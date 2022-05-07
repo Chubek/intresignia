@@ -75,6 +75,8 @@ def orb_matcher(img: np.array, threshold=60,
     global orb
     global queries_descriptors
 
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
     matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
 
     print(f"Selecting norm {norm}")
@@ -107,12 +109,7 @@ def orb_matcher(img: np.array, threshold=60,
     elif mode == st.ClassiferAggMode.AVG:
         mode_func = np.average
     elif mode == st.ClassiferAggMode.VAR:
-        mode_func = np.var
-
-    img = cv2.resize(img, (350, 350))
-
-    kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
-    img = cv2.filter2D(img, -1, kernel)
+        mode_func = np.var   
 
     _, img_descriptors = orb.detectAndCompute(img, None)
 
