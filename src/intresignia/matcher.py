@@ -1,5 +1,7 @@
 import inspect
+from msilib.schema import Class
 import os
+from tkinter.tix import MAX
 from typing import Dict, Union
 
 import cv2
@@ -8,6 +10,7 @@ import numpy as np
 path = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
 
+from settings import MatchNorm, ClassiferAggMode
 
 path_matchers = os.path.join(path, 'matchers')
 
@@ -59,35 +62,75 @@ classes = {
     "stop.png": "Stop"
 }
 
-orb = cv2.ORB_create()
-m = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
 
 queries_imgs = {k.split("/")[-1]: cv2.imread(k, 0) for k in imgs_temp}
-queires_descriptors = {k: orb.detectAndCompute(
-    v, None)[1] for k, v in queries_imgs.items()}
+orb = cv2.ORB_create()
+queries_descriptors = {k: orb.detectAndCompute(
+            v, None)[1] for k, v in queries_imgs.items()}
 
 
-def orb_matcher(img: np.array, threshold=60) -> Union[str, Dict]:
+
+def orb_matcher(img: np.array, threshold=60, norm=MatchNorm.HAMMING, mode=ClassiferAggMode) -> Union[str, Dict]:
     global orb
-    global m
+    global queries_descriptors
+
+    matcher = cv2.BFMatcher(norm, crossCheck=True)
+
+    print(f"Selecting norm {norm}")
+    if norm == MatchNorm.HAMMING:
+        matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+    elif norm == MatchNorm.HAMMING2:
+        matcher = cv2.BFMatcher(cv2.NORM_HAMMING2, crossCheck=True)
+    elif norm == MatchNorm.L1:
+        matcher = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
+    elif norm == MatchNorm.L2:
+        matcher = cv2.BFMatcher(cv2.NORM_L2, crossCheck=True)
+    elif norm == MatchNorm.L2SQR:
+        matcher = cv2.BFMatcher(cv2.NORM_L2SQR, crossCheck=True)
+    elif norm == MatchNorm.INF:
+        matcher = cv2.BFMatcher(cv2.NORM_INF, crossCheck=True)
+    elif norm == MatchNorm.MINMAX:
+        matcher = cv2.BFMatcher(cv2.NORM_MINMAX, crossCheck=True)
+
+
+    mode_func = np.mean
+
+    print(f"Selecting mode {mode}...")
+    if mode == ClassiferAggMode.MEAN:
+        mode_func = np.mean
+    elif mode == ClassiferAggMode.MAX:
+        mode_func = np.max
+    elif mode == ClassiferAggMode.MIN:
+        mode_func = np.min
+    elif mode == ClassiferAggMode.MEDIAN:
+        mode_func = np.median
+    elif mode == ClassiferAggMode.AVG:
+        mode_func = np.average
+    elif mode == ClassiferAggMode.VAR:
+        mode_func = np.var
+
+    img = cv2.resize(img, (350, 350))
+
+    kernel = np.array([[-1,-1,-1], [-1,9,-1], [-1,-1,-1]])
+    img = cv2.filter2D(img, -1, kernel)
 
     _, img_descriptors = orb.detectAndCompute(img, None)
 
-    scores_mean = {}
+    scores_agg = {}
 
-    for k, v in queires_descriptors.items():
-        matches = m.match(img_descriptors, v)
+    for k, v in queries_descriptors.items():
+        matches = matcher.match(img_descriptors, v)
 
         dists = [m.distance for m in matches]
 
-        scores_mean[k] = np.mean(dists)
+        scores_agg[k] = mode_func(dists)
 
-    max_ = max(scores_mean, key=scores_mean.get)
+    max_ = max(scores_agg, key=scores_agg.get)
 
-    print(f"Got a max score of {scores_mean[max_]} which belongs to {classes[max_]}...")
+    print(f"Got a aggregate score of {scores_agg[max_]} which belongs to {classes[max_]}...")
 
-    if scores_mean[max_] < threshold:
+    if scores_agg[max_] < threshold:
         print("Threshold larger than max mean score...")
-        -1, scores_mean
+        -1, scores_agg
 
-    return classes[max_], scores_mean
+    return classes[max_], scores_agg

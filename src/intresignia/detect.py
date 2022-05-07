@@ -66,6 +66,7 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         print(f"Operating on circle {i + 1}/{len(circles)}...")
 
         x, y, r = circle
+        r = r + 20
 
         if y >= r:
             y_left, y_right = y - r, y + r
@@ -88,7 +89,10 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
             continue
 
         if settings.classifier == st.ClassifierType.ORB:
-            temp, dct = matcher.orb_matcher(img_cropped, settings.thresh_temp)
+            temp, dct = matcher.orb_matcher(img_cropped,
+                                            settings.classifier_threshold,
+                                            settings.classifier_norm,
+                                            settings.classifer_agg)
         else:
             temp, dct = template.get_max_sim(img_cropped, settings.thresh_temp)
 
