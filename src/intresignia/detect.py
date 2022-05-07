@@ -11,6 +11,8 @@ from . import settings as st
 from . import shape, template
 from . import auto_brighten
 
+KERNEL = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
+
 def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.array:
     """
     This is the main detect function.
@@ -90,13 +92,17 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         if img[y_left:y_right, x_left:x_right, :].shape[1] == 0:
             continue
 
-        img_cropped = cv2.resize(img_cropped, (300, 300))
+        img_cropped = cv2.resize(img_cropped, (400, 400))
 
-        kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
-        img_cropped = cv2.GaussianBlur(img_cropped, (5,5), cv2.BORDER_DEFAULT)
-        img_cropped = cv2.filter2D(img_cropped, -1, kernel)
-        img_cropped, _, _ = auto_brighten.automatic_brightness_and_contrast(img_cropped)
+        img_cropped = cv2.GaussianBlur(img_cropped, (6,6), 
+                    cv2.BORDER_DEFAULT)
+        img_cropped = cv2.filter2D(img_cropped, -1, KERNEL)
+        img_cropped = cv2.detailEnhance(img_cropped, kernel=10, range=0.15)
 
+        try:
+            img_cropped, _, _ = auto_brighten.automatic_brightness_and_contrast(img_cropped)
+        except:
+            pass
 
         if settings.classifier == st.ClassifierType.ORB:
             temp, dct = matcher.orb_matcher(img_cropped,
