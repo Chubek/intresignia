@@ -69,9 +69,10 @@ queries_descriptors = {k: orb.detectAndCompute(
     v, None)[1] for k, v in queries_imgs.items()}
 
 
-def orb_matcher(img: np.array, threshold=60, 
-        norm=st.MatchNorm.HAMMING, 
-        mode=st.ClassiferAggMode) -> Union[str, Dict]:
+def orb_matcher(img: np.array, threshold=60,
+                norm=st.MatchNorm.HAMMING,
+                mode=st.ClassiferAggMode.MEAN,
+                post=st.ClassifierPostOp.MIN) -> Union[str, Dict]:
     global orb
     global queries_descriptors
 
@@ -109,7 +110,7 @@ def orb_matcher(img: np.array, threshold=60,
     elif mode == st.ClassiferAggMode.AVG:
         mode_func = np.average
     elif mode == st.ClassiferAggMode.VAR:
-        mode_func = np.var   
+        mode_func = np.var
 
     _, img_descriptors = orb.detectAndCompute(img, None)
 
@@ -122,13 +123,20 @@ def orb_matcher(img: np.array, threshold=60,
 
         scores_agg[k] = mode_func(dists)
 
-    max_ = max(scores_agg, key=scores_agg.get)
+    post_func = min
+
+    if post == st.ClassifierPostOp.MIN:
+        post_func = min
+    elif post == st.ClassifierPostOp.MAX:
+        post_func = max
+
+    post_ = post_func(scores_agg, key=scores_agg.get)
 
     print(
-        f"Got a aggregate score of {scores_agg[max_]} which belongs to {classes[max_]}...")
+        f"Got a aggregate score of {scores_agg[post_]} which belongs to {classes[max_]}...")
 
-    if scores_agg[max_] < threshold:
+    if scores_agg[post_] < threshold:
         print("Threshold larger than max mean score...")
         -1, scores_agg
 
-    return classes[max_], scores_agg
+    return f"{classes[post_]} - {post_}", scores_agg

@@ -16,6 +16,10 @@ class ClassiferAggMode(str, Enum):
     AVG = "AVG"
     VAR = "VAR"
 
+class ClassifierPostOp(str, Enum):
+    MIN = "MIN"
+    MAX = "MAX"
+
 
 class MatchNorm(str, Enum):
     HAMMING = 'HAMMING'
@@ -75,6 +79,7 @@ class Settings(BaseModel):
     classifier_norm: Optional[MatchNorm] = MatchNorm.HAMMING2
     classifier_aggmode: Optional[ClassiferAggMode] = ClassiferAggMode.MEAN
     classifier_threshold: Optional[float] = 50
+    classifer_postop: Optional[ClassifierPostOp] = ClassifierPostOp.MIN
 
     class Config:
         use_enum_values = True
