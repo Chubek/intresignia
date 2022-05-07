@@ -95,10 +95,10 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
 
         y_nonzero, x_nonzero, _ = np.nonzero(img_cropped)
 
-        cd = st.Coords(x1=utils.proportion(np.min(x_nonzero), w, w_c),
-                       x2=utils.proportion(np.max(x_nonzero), w, w_c),
-                       y1=utils.proportion(np.min(y_nonzero), h, h_c),
-                       y2=utils.proportion(np.max(y_nonzero), h, h_c)
+        cd = st.Coords(x1=utils.proportion(np.min(x_nonzero), w_c, w),
+                       x2=utils.proportion(np.max(x_nonzero), w_c, w),
+                       y1=utils.proportion(np.min(y_nonzero), h_c, h),
+                       y2=utils.proportion(np.max(y_nonzero), h_c, h)
 
         )
 
@@ -142,7 +142,7 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
                         color=(0, 200, 0), thickness=2, org=(cd.x2, cd.y2))
 
         temp = f"{i + 1} - {temp}"
-        coords[temp] = cd
+        coords[temp] = {"real": (x, y, r), "adjusted": cd}
         dcts[temp] = dct
         cropped[temp] = img_cropped
         all_det.append(temp)
