@@ -68,7 +68,7 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         print(f"Operating on circle {i + 1}/{len(circles)}...")
 
         x, y, r = circle
-        r = r + 20
+        r_orig = r
 
         if y >= r:
             y_left, y_right = y - r, y + r
@@ -80,7 +80,8 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         else:
             x_left, x_right = x, x + r
 
-        img_cropped = color_isolated[y_left:y_right, x_left:x_right, :]
+        img_cropped = color_isolated[y_left - 5:y_right + 5, 
+                                        x_left - 5:x_right + 5, :]
 
         y_nonzero, x_nonzero, _ = np.nonzero(img_cropped)
 
@@ -119,7 +120,8 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
             cv2.putText(output, temp,
                         fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=1.5,
                         color=(0, 255, 0), thickness=2, org=(x - (r * 2), y - (r * 2)))
-
+        
+        temp = f"{i + 1} - {temp}"
         coords[temp] = (x, y, r)
         dcts[temp] = dct
         cropped[temp] = img_cropped
