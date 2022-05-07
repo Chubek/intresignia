@@ -88,18 +88,18 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         if img[y_left:y_right, x_left:x_right, :].shape[1] == 0:
             continue
 
-        img_blackened = np.zeros((h, w, 3))
-        img_isolated_only = img_blackened + img[y_left - 10:y_right + 10,
-                             x_left - 10:x_right + 10, :]
+        img_isolated_only = np.zeros((h, w, 3))
+        img_isolated_only[y_left - 10:y_right + 10,  x_left - 10:x_right +
+                          10, :] = img[y_left - 10:y_right + 10, x_left - 10:x_right + 10, :]
 
         x_colored = np.sum(img_isolated_only, axis=1)
-        x_colored_indices = np.arange(0, 
-                    len(x_colored))[x_colored > 0]
+        x_colored_indices = np.arange(0,
+                                      len(x_colored))[x_colored > 0]
         x_min, x_max = min(x_colored_indices), max(x_colored_indices)
 
         y_colored = np.sum(img_isolated_only, axis=0)
-        y_colored_indices = np.arange(0, 
-                    len(x_colored))[y_colored > 0]
+        y_colored_indices = np.arange(0,
+                                      len(x_colored))[y_colored > 0]
         y_min, y_max = min(y_colored_indices), max(y_colored_indices)
 
         cd = st.Coords(
@@ -137,7 +137,8 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
             continue
 
         print("Shape detected, adding to list...")
-        cv2.rectangle(output, (cd.x1, cd.y1), (cd.x2, cd.y2), (0, 255, 0), thickness=2)
+        cv2.rectangle(output, (cd.x1, cd.y1), (cd.x2, cd.y2),
+                      (0, 255, 0), thickness=2)
 
         if settings.do_classify:
             print("DoClassify enabled, marking classification...")
