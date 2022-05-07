@@ -1,4 +1,4 @@
-from settings import MatchNorm, ClassiferAggMode
+from . import settings as st
 import inspect
 import os
 from tkinter.tix import MAX
@@ -69,42 +69,44 @@ queries_descriptors = {k: orb.detectAndCompute(
     v, None)[1] for k, v in queries_imgs.items()}
 
 
-def orb_matcher(img: np.array, threshold=60, norm=MatchNorm.HAMMING, mode=ClassiferAggMode) -> Union[str, Dict]:
+def orb_matcher(img: np.array, threshold=60, 
+        norm=st.st.MatchNorm.HAMMING, 
+        mode=st.ClassiferAggMode) -> Union[str, Dict]:
     global orb
     global queries_descriptors
 
     matcher = cv2.BFMatcher(norm, crossCheck=True)
 
     print(f"Selecting norm {norm}")
-    if norm == MatchNorm.HAMMING:
+    if norm == st.MatchNorm.HAMMING:
         matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-    elif norm == MatchNorm.HAMMING2:
+    elif norm == st.MatchNorm..HAMMING2:
         matcher = cv2.BFMatcher(cv2.NORM_HAMMING2, crossCheck=True)
-    elif norm == MatchNorm.L1:
+    elif norm == st.MatchNorm.L1:
         matcher = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
-    elif norm == MatchNorm.L2:
+    elif norm == st.MatchNorm.L2:
         matcher = cv2.BFMatcher(cv2.NORM_L2, crossCheck=True)
-    elif norm == MatchNorm.L2SQR:
+    elif norm == st.MatchNorm.L2SQR:
         matcher = cv2.BFMatcher(cv2.NORM_L2SQR, crossCheck=True)
-    elif norm == MatchNorm.INF:
+    elif norm == st.MatchNorm.INF:
         matcher = cv2.BFMatcher(cv2.NORM_INF, crossCheck=True)
-    elif norm == MatchNorm.MINMAX:
+    elif norm == st.MatchNorm.MINMAX:
         matcher = cv2.BFMatcher(cv2.NORM_MINMAX, crossCheck=True)
 
     mode_func = np.mean
 
     print(f"Selecting mode {mode}...")
-    if mode == ClassiferAggMode.MEAN:
+    if mode == st.ClassiferAggMode.MEAN:
         mode_func = np.mean
-    elif mode == ClassiferAggMode.MAX:
+    elif mode == st.ClassiferAggMode.MAX:
         mode_func = np.max
-    elif mode == ClassiferAggMode.MIN:
+    elif mode == st.ClassiferAggMode.MIN:
         mode_func = np.min
-    elif mode == ClassiferAggMode.MEDIAN:
+    elif mode == st.ClassiferAggMode.MEDIAN:
         mode_func = np.median
-    elif mode == ClassiferAggMode.AVG:
+    elif mode == st.ClassiferAggMode.AVG:
         mode_func = np.average
-    elif mode == ClassiferAggMode.VAR:
+    elif mode == st.ClassiferAggMode.VAR:
         mode_func = np.var
 
     img = cv2.resize(img, (350, 350))
