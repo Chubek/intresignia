@@ -139,4 +139,4 @@ def orb_matcher(img: np.array, threshold=60,
         print("Threshold larger than max mean score...")
         -1, scores_agg
 
-    return f"{classes[post_]} - {post_}", scores_agg
+    return f"{classes[post_]} - { scores_agg[post_]}", scores_agg
