@@ -57,9 +57,10 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
 
     output = img.copy()
 
-    dcts = []
-    coords = []
-    cropped = []
+    dcts = {}
+    coords = {}
+    cropped = {}
+    all_det = []
 
     print(f"Found {len(circles)} circles...")
 
@@ -96,7 +97,6 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         img_cropped = cv2.filter2D(img_cropped, -1, kernel)
         img_cropped, _, _ = auto_brighten.automatic_brightness_and_contrast(img_cropped)
 
-        cropped.append(img_cropped)
 
         if settings.classifier == st.ClassifierType.ORB:
             temp, dct = matcher.orb_matcher(img_cropped,
@@ -106,8 +106,7 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         else:
             temp, dct = template.get_max_sim(img_cropped, settings.thresh_temp)
 
-        dcts.append(dct)
-
+        
         if temp == -1:
             print("Could not detect any of the sign shapes based on given templates...")
             continue
@@ -118,14 +117,17 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         if settings.do_classify:
             print("DoClassify enabled, marking classification...")
             cv2.putText(output, temp,
-                        fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=0.5,
-                        color=(0, 255, 0), thickness=2, org=(x - r, y - r))
+                        fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=1.5,
+                        color=(0, 255, 0), thickness=2, org=(x - (r * 2), y - (r * 2)))
 
-        coords.append((x, y, r))
+        coords[temp] = (x, y, r)
+        dcts[temp] = dct
+        cropped[temp] = img_cropped
+        all_det.append(temp)
 
     if len(coords) == 0:
         print("Warning: No signs detected, output image won't have any marks...")
 
     print("Done! Returning the output image, scores, sign coordinates and isolated color.")
 
-    return output, dcts, coords, color_isolated, cropped
+    return output, dcts, coords, color_isolated, cropped, all_det
