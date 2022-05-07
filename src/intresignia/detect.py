@@ -10,7 +10,6 @@ from . import color, matcher
 from . import settings as st
 from . import shape, template
 from . import auto_brighten
-from . import utils
 
 KERNEL = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
 
@@ -99,7 +98,7 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
 
         y_colored = np.sum(img_isolated_only, axis=0)
         y_colored_indices = np.arange(0,
-                                      len(x_colored))[y_colored > 0]
+                                      len(y_colored))[y_colored > 0]
         y_min, y_max = min(y_colored_indices), max(y_colored_indices)
 
         cd = st.Coords(
