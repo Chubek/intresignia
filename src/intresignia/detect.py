@@ -90,7 +90,7 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         if img[y_left:y_right, x_left:x_right, :].shape[1] == 0:
             continue
 
-        img_cropped = cv2.resize(img, (300, 300))
+        img_cropped = cv2.resize(img_cropped, (300, 300))
 
         kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
         img_cropped = cv2.GaussianBlur(img_cropped, (5,5), cv2.BORDER_DEFAULT)
