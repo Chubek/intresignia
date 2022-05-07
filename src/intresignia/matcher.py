@@ -80,7 +80,7 @@ def orb_matcher(img: np.array, threshold=60,
     print(f"Selecting norm {norm}")
     if norm == st.MatchNorm.HAMMING:
         matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-    elif norm == st.MatchNorm..HAMMING2:
+    elif norm == st.MatchNorm.HAMMING2:
         matcher = cv2.BFMatcher(cv2.NORM_HAMMING2, crossCheck=True)
     elif norm == st.MatchNorm.L1:
         matcher = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
