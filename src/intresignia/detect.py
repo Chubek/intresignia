@@ -68,7 +68,6 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         print(f"Operating on circle {i + 1}/{len(circles)}...")
 
         x, y, r = circle
-        r_orig = r
 
         if y >= r:
             y_left, y_right = y - r, y + r
