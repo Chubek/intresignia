@@ -94,7 +94,7 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
         img_cropped = cv2.GaussianBlur(img_cropped, (5,5), cv2.BORDER_DEFAULT)
         img_cropped = cv2.filter2D(img_cropped, -1, kernel)
-        img_cropped = auto_brighten.automatic_brightness_and_contrast(img_cropped)
+        img_cropped, _, _ = auto_brighten.automatic_brightness_and_contrast(img_cropped)
 
         cropped.append(img_cropped)
 
