@@ -75,7 +75,7 @@ def orb_matcher(img: np.array, threshold=60,
     global orb
     global queries_descriptors
 
-    matcher = cv2.BFMatcher(norm, crossCheck=True)
+    matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
 
     print(f"Selecting norm {norm}")
     if norm == st.MatchNorm.HAMMING:
