@@ -133,7 +133,7 @@ def orb_matcher(img: np.array, threshold=60,
     post_ = post_func(scores_agg, key=scores_agg.get)
 
     print(
-        f"Got a aggregate score of {scores_agg[post_]} which belongs to {classes[max_]}...")
+        f"Got a aggregate score of {scores_agg[post_]} which belongs to {classes[post_]}...")
 
     if scores_agg[post_] < threshold:
         print("Threshold larger than max mean score...")
