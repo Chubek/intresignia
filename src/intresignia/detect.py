@@ -88,9 +88,9 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         if img[y_left:y_right, x_left:x_right, :].shape[1] == 0:
             continue
 
-        img_isolated_only = np.zeros((h, w, 3))
+        img_isolated_only = np.zeros((h, w))
         img_isolated_only[y_left - 10:y_right + 10,  x_left - 10:x_right +
-                          10, :] = img[y_left - 10:y_right + 10, x_left - 10:x_right + 10, :]
+                          10] = 1
 
         x_colored = np.sum(img_isolated_only, axis=1)
         x_colored_indices = np.arange(0,
