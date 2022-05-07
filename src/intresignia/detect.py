@@ -88,22 +88,26 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         if img[y_left:y_right, x_left:x_right, :].shape[1] == 0:
             continue
 
-        img_cropped = color_isolated[y_left - 5:y_right + 5,
-                                     x_left - 5:x_right + 5, :]
+        img_blackened = np.zeros((h, w, 3))
+        img_isolated_only = img_blackened + img[y_left - 10:y_right + 10,
+                             x_left - 10:x_right + 10, :]
 
-        h_c, w_c, _ = img_cropped.shape
+        x_colored = np.sum(img_isolated_only, axis=1)
+        x_colored_indices = np.arange(0, 
+                    len(x_colored))[x_colored > 0]
+        x_min, x_max = min(x_colored_indices), max(x_colored_indices)
 
-        h_r, w_r = h - h_c, w - w_c
+        y_colored = np.sum(img_isolated_only, axis=0)
+        y_colored_indices = np.arange(0, 
+                    len(x_colored))[y_colored > 0]
+        y_min, y_max = min(y_colored_indices), max(y_colored_indices)
 
-        y_nonzero, x_nonzero, _ = np.nonzero(img_cropped)
-
-        cd = st.Coords(x1=np.min(x_nonzero) + w_r,
-                       x2=np.max(x_nonzero) + w_r,
-                       y1=np.min(y_nonzero) + h_r,
-                       y2=np.max(y_nonzero) + h_r
-
+        cd = st.Coords(
+            x1=x_min,
+            x2=x_max,
+            y1=y_min,
+            y2=y_max
         )
-
 
         img_cropped = img[cd.y1:cd.y2, cd.x1:cd.x2]
 
