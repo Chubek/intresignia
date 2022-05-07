@@ -139,7 +139,7 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
                         color=(0, 200, 0), thickness=2, org=(cd.x2, cd.y2))
 
         temp = f"{i + 1} - {temp}"
-        coords[temp] = coords
+        coords[temp] = cd
         dcts[temp] = dct
         cropped[temp] = img_cropped
         all_det.append(temp)
