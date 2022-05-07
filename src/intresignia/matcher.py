@@ -70,7 +70,7 @@ queries_descriptors = {k: orb.detectAndCompute(
 
 
 def orb_matcher(img: np.array, threshold=60, 
-        norm=st.st.MatchNorm.HAMMING, 
+        norm=st.MatchNorm.HAMMING, 
         mode=st.ClassiferAggMode) -> Union[str, Dict]:
     global orb
     global queries_descriptors
