@@ -73,7 +73,7 @@ class Settings(BaseModel):
     do_classify: Optional[bool] = True
     classifier: Optional[ClassifierType] = ClassifierType.ORB
     classifier_norm: Optional[MatchNorm] = MatchNorm.HAMMING2
-    classifer_agg = Optional[ClassiferAggMode] = ClassiferAggMode.MEAN
+    classifer_agg: Optional[ClassiferAggMode] = ClassiferAggMode.MEAN
     classifier_threshold: Optional[float] = 50
 
     class Config:
