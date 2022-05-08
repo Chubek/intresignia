@@ -2,7 +2,6 @@ from enum import Enum
 from typing import List, Optional, Tuple
 
 from pydantic import BaseModel
-from pyparsing import Opt
 
 
 class ClassifierType(str, Enum):
