@@ -105,7 +105,7 @@ def enclose_red(img: np.array,
     close = cv2.morphologyEx(isolated, cv2.MORPH_CLOSE, kernel)
     copy_img = cv2.GaussianBlur(close, (5, 5), 0)
 
-    img_copy = np.where(copy_img[:, :, 2] > red_thresh, copy_img, 0)
+    img_copy = np.where(copy_img > red_thresh, copy_img, 0)
 
     for op in post_ops:
         if op == st.ColorPostOps.OP_BLUR:
