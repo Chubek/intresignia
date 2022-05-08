@@ -69,7 +69,7 @@ def detect_circle(
 
         if op == st.CircleOps.OP_THRESHOLD:
             img_copy = cv2.cvtColor(img_copy, cv2.COLOR_BGR2GRAY)
-            img_copy = cv2.adaptiveThreshold(img_copy, 255, 1, 1, 11, 2)
+            img_copy = cv2.adaptiveThreshold(img_copy.astype(np.uint8), 255, 1, 1, 11, 2)
 
         if op == st.CircleOps.OP_NORMALIZE:
             img_copy = cv2.normalize(img_copy, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)

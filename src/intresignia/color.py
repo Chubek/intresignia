@@ -18,7 +18,7 @@ def enclose_red(img: np.array,
                 op_brighten=False,
                 op_brighten_hsv=True,
                 op_sharpen=False,
-                post_ops=[st.ColorPostOps.OP_THRESHOLD],
+                post_ops=[st.ColorPostOps.OP_CLOSE],
                 add_hue=40) -> np.array:
     """
     This function takes four arguments and isolates the red color. The red
@@ -107,7 +107,7 @@ def enclose_red(img: np.array,
 
         if op == st.ColorPostOps.OP_THRESHOLD:
             img_copy = cv2.cvtColor(img_copy, cv2.COLOR_BGR2GRAY)
-            img_copy = cv2.adaptiveThreshold(img_copy, 255, 1, 1, 11, 2)
+            img_copy = cv2.adaptiveThreshold(img_copy.astype(np.uint8), 255, 1, 1, 11, 2)
 
         if op == st.ColorPostOps.OP_NORMALIZE:
             img_copy = cv2.normalize(img_copy, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
