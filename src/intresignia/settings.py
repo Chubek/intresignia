@@ -102,7 +102,7 @@ class Settings(BaseModel):
     circle_op_list: Optional[List[CircleOps]] = [CircleOps.OP_CLOSE]
     color_auto_brighten: Optional[bool] = True
     color_op_hsv: Optional[bool] = True
-    color_post_ops: Optional[ColorPostOps] = [ColorPostOps.OP_THRESHOLD],
+    color_post_ops: Optional[ColorPostOps] = [ColorPostOps.OP_THRESHOLD]
     color_hue_value: Optional[int] = 20
     color_sharpen: Optional[bool] = True
     do_classify: Optional[bool] = True
