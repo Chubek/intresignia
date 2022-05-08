@@ -73,8 +73,11 @@ def detect_circle(
 
         if op == st.CircleOps.OP_NORMALIZE:
             img_copy = cv2.normalize(img_copy, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
-        
-    gray = cv2.cvtColor(img_copy, cv2.COLOR_BGR2GRAY) 
+    
+    if st.CircleOps.OP_THRESHOLD in op_list:
+        gray = img_copy
+    else:
+        gray = cv2.cvtColor(img_copy, cv2.COLOR_BGR2GRAY) 
     
     algo_circle = cv2.HOUGH_GRADIENT
 
