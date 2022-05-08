@@ -4,7 +4,8 @@ import cv2
 import numpy as np
 
 from . import settings as st
-from . import detect as dt
+
+KERNEL = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
 
 def detect_circle(
         img: np.array,
@@ -58,7 +59,7 @@ def detect_circle(
             img_copy = cv2.GaussianBlur(img_copy,       
                          (kernel_size, kernel_size), 0)
         if op == st.CircleOps.OP_SHARPEN:
-            img_copy = cv2.filter2D(img_copy, -1, dt.KERNEL)
+            img_copy = cv2.filter2D(img_copy, -1, KERNEL)
             img_copy = cv2.detailEnhance(img_copy)
 
         if op == st.CircleOps.OP_CLOSE:

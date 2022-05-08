@@ -5,7 +5,9 @@ import cv2
 import numpy as np
 
 from . import auto_brighten
-from . import detect as dt
+
+KERNEL = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
+
 
 def enclose_red(img: np.array,
                 lower_thrershold=((120, 50, 50), (150, 255, 255)),
@@ -53,7 +55,7 @@ def enclose_red(img: np.array,
     copy_img = img.copy()
 
     if op_sharpen:
-        copy_img = cv2.filter2D(copy_img, -1, dt.KERNEL)
+        copy_img = cv2.filter2D(copy_img, -1, KERNEL)
         copy_img = cv2.detailEnhance(copy_img)
 
     if op_brighten:
