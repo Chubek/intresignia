@@ -45,6 +45,7 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
         op_brighten=stn.color_auto_brighten,
         op_brighten_hsv=stn.color_op_hsv,
         op_sharpen=stn.color_sharpen,
+        add_red=stn.color_add_red,
         add_hue=stn.color_add_hue,
         add_val=stn.color_add_value,
         add_sat=stn.color_add_saturation,

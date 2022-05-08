@@ -106,6 +106,7 @@ class Settings(BaseModel):
     color_add_hue: Optional[int] = 20
     color_add_saturation: Optional[int] = 20
     color_add_value: Optional[int] = 20
+    color_add_red: Optional[int] = 20
     color_sharpen: Optional[bool] = True
     do_classify: Optional[bool] = True
     classifier: Optional[ClassifierType] = ClassifierType.ORB

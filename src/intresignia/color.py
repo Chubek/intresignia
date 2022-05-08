@@ -19,6 +19,7 @@ def enclose_red(img: np.array,
                 op_brighten_hsv=True,
                 op_sharpen=False,
                 post_ops=[st.ColorPostOps.OP_CLOSE],
+                add_red=20,
                 add_hue=40,
                 add_val=20,
                 add_sat=20) -> np.array:
@@ -59,6 +60,10 @@ def enclose_red(img: np.array,
 
     copy_img = img.copy()
 
+    if add_red:
+        copy_img[:, :, 2] += add_red
+        copy_img[:, :, 2] = np.clip(copy_img[:, :, 2], 0, 255)
+
     if op_sharpen:
         copy_img = cv2.filter2D(copy_img, -1, KERNEL)
         copy_img = cv2.detailEnhance(copy_img)
@@ -90,11 +95,6 @@ def enclose_red(img: np.array,
 
         hsv_img[:, :, 2] = np.clip(hsv_img[:, :, 2], 0, 255)
 
-        normed = cv2.normalize(hsv_img, None, 0, 180,
-                               cv2.NORM_MINMAX, cv2.CV_8UC1)
-
-        hsv_img = cv2.GaussianBlur(normed, (5, 5), 0)
-
     lower_mask = cv2.inRange(hsv_img, lower_thrershold[0],
                              lower_thrershold[1])
     upper_mask = cv2.inRange(hsv_img, upper_thrershold[0],
@@ -105,7 +105,7 @@ def enclose_red(img: np.array,
     close = cv2.morphologyEx(isolated, cv2.MORPH_CLOSE, kernel)
     copy_img = cv2.GaussianBlur(close, (5, 5), 0)
 
-    img_copy = np.where(copy_img > red_thresh, copy_img, 0)
+    img_copy = np.where(copy_img[:, :, 2] > red_thresh, copy_img, 0)
 
     for op in post_ops:
         if op == st.ColorPostOps.OP_BLUR:
