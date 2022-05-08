@@ -22,7 +22,8 @@ def enclose_red(img: np.array,
                 add_red=20,
                 add_hue=40,
                 add_val=20,
-                add_sat=20) -> np.array:
+                add_sat=20,
+                convert_hsv=False) -> np.array:
     """
     This function takes four arguments and isolates the red color. The red
     image is later given to HoughCircles to detect circles so it's necessary that image is clean
@@ -99,6 +100,9 @@ def enclose_red(img: np.array,
                              lower_thrershold[1])
     upper_mask = cv2.inRange(hsv_img, upper_thrershold[0],
                              upper_thrershold[1])
+
+    if convert_hsv:
+        copy_img = cv2.cvtColor(hsv_img, cv2.COLOR_HSV2BGR)
 
     isolated = cv2.bitwise_and(
         copy_img, copy_img, mask=lower_mask + upper_mask)

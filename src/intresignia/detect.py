@@ -49,7 +49,8 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
         add_hue=stn.color_add_hue,
         add_val=stn.color_add_value,
         add_sat=stn.color_add_saturation,
-        post_ops=stn.color_post_ops)
+        post_ops=stn.color_post_ops,
+        convert_hsv=stn.color_convert_hsv)
 
     circles = shape.detect_circle(
         color_isolated,
