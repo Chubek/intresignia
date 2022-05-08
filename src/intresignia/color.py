@@ -19,7 +19,9 @@ def enclose_red(img: np.array,
                 op_brighten_hsv=True,
                 op_sharpen=False,
                 post_ops=[st.ColorPostOps.OP_CLOSE],
-                add_hue=40) -> np.array:
+                add_hue=40,
+                add_val=20,
+                add_sat=20) -> np.array:
     """
     This function takes four arguments and isolates the red color. The red
     image is later given to HoughCircles to detect circles so it's necessary that image is clean
@@ -73,6 +75,20 @@ def enclose_red(img: np.array,
             hsv_img[:, :, 0] + add_hue, hsv_img[:, :, 0])
 
         hsv_img[:, :, 0] = np.clip(hsv_img[:, :, 0], 0, 180)
+
+        hsv_img[:, :, 1] = np.where(
+            (hsv_img[:, :, 1] > 150 - add_sat) &
+            (hsv_img[:, :, 1] < 150 + (add_sat)),
+            hsv_img[:, :, 1] + add_sat, hsv_img[:, :, 1])
+
+        hsv_img[:, :, 1] = np.clip(hsv_img[:, :, 1], 1, 255)
+
+        hsv_img[:, :, 2] = np.where(
+            (hsv_img[:, :, 2] > 150 - add_val) &
+            (hsv_img[:, :, 2] < 150 + (add_val)),
+            hsv_img[:, :, 2] + add_val, hsv_img[:, :, 2])
+
+        hsv_img[:, :, 2] = np.clip(hsv_img[:, :, 2], 0, 255)
 
         normed = cv2.normalize(hsv_img, None, 0, 180,
                                cv2.NORM_MINMAX, cv2.CV_8UC1)

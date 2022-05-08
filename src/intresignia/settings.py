@@ -103,7 +103,9 @@ class Settings(BaseModel):
     color_auto_brighten: Optional[bool] = True
     color_op_hsv: Optional[bool] = True
     color_post_ops: Optional[List[ColorPostOps]] = [ColorPostOps.OP_THRESHOLD]
-    color_hue_value: Optional[int] = 20
+    color_add_hue: Optional[int] = 20
+    color_add_saturation: Optional[int] = 20
+    color_add_value: Optional[int] = 20
     color_sharpen: Optional[bool] = True
     do_classify: Optional[bool] = True
     classifier: Optional[ClassifierType] = ClassifierType.ORB
