@@ -138,8 +138,8 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         print("Shape detected, adding to list...")
         cv2.rectangle(output, (cd.x1, cd.y1), (cd.x2, cd.y2),
                       (0, 255, 0), thickness=2)
-        cv2.circle(output, (x, y), r, (0, 100, 0), 1.3)
-        
+        cv2.circle(output, (x, y), r, (0, 100, 0), 2)
+
         if settings.do_classify:
             print("DoClassify enabled, marking classification...")
             cv2.putText(output, temp,
