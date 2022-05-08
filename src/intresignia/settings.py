@@ -47,6 +47,13 @@ class CircleOps(str, Enum):
     OP_BLUR = "OP_BLUR"
     OP_SHARPEN = "OP_SHARPEN"
 
+class ColorPostOps(str, Enum):
+    OP_CLOSE = "OP_CLOSE"
+    OP_NORMALIZE = "OP_NORMALIZE"
+    OP_THRESHOLD = "OP_THRESHOLD"
+    OP_BLUR = "OP_BLUR"
+    OP_SHARPEN = "OP_SHARPEN"
+
 class CircleAlgo(str, Enum):
     GRADIENT = "GRADIENT"
     GRADIENT_ALT = "GRADIENT_ALT"    
@@ -95,6 +102,7 @@ class Settings(BaseModel):
     circle_op_list: Optional[List[CircleOps]] = [CircleOps.OP_CLOSE]
     color_auto_brighten: Optional[bool] = True
     color_op_hsv: Optional[bool] = True
+    color_post_ops: Optional[ColorPostOps] = [ColorPostOps.OP_THRESHOLD],
     color_hue_value: Optional[int] = 20
     color_sharpen: Optional[bool] = True
     do_classify: Optional[bool] = True

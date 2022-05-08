@@ -45,7 +45,8 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
         op_brighten=stn.color_auto_brighten,
         op_brighten_hsv=stn.color_op_hsv,
         op_sharpen=stn.color_sharpen,
-        add_hue=stn.color_hue_value,)
+        add_hue=stn.color_hue_value,
+        post_ops=stn.color_post_ops)
 
     circles = shape.detect_circle(
         color_isolated,
@@ -55,8 +56,8 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
         stn.circle_max_radius,
         stn.circle_param_1,
         stn.circle_param_2,
-        stn.circle_op_list,
-        stn.circle_algo
+        op_list=stn.circle_op_list,
+        algo=stn.circle_algo
     )
 
     output = img.copy()

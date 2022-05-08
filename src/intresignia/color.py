@@ -4,6 +4,8 @@ from typing import List
 import cv2
 import numpy as np
 
+from . import settings as st
+
 from . import auto_brighten
 
 KERNEL = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
@@ -16,6 +18,7 @@ def enclose_red(img: np.array,
                 op_brighten=False,
                 op_brighten_hsv=True,
                 op_sharpen=False,
+                post_ops=[st.ColorPostOps.OP_THRESHOLD],
                 add_hue=40) -> np.array:
     """
     This function takes four arguments and isolates the red color. The red
@@ -86,4 +89,26 @@ def enclose_red(img: np.array,
     close = cv2.morphologyEx(isolated, cv2.MORPH_CLOSE, kernel)
     copy_img = cv2.GaussianBlur(close, (5, 5), 0)
 
-    return np.where(copy_img > red_thresh, copy_img, 0)
+    img_copy = np.where(copy_img > red_thresh, copy_img, 0)
+
+    for op in post_ops:
+        if op == st.ColorPostOps.OP_BLUR:
+            kernel_size = 5
+            img_copy = cv2.GaussianBlur(img_copy,       
+                         (kernel_size, kernel_size), 0)
+        if op == st.ColorPostOps.OP_SHARPEN:
+            img_copy = cv2.filter2D(img_copy, -1, KERNEL)
+            img_copy = cv2.detailEnhance(img_copy)
+
+        if op == st.ColorPostOps.OP_CLOSE:
+            kernel = cv2.getStructuringElement(
+            shape=cv2.MORPH_ELLIPSE, ksize=(8, 8))
+            img_copy = cv2.morphologyEx(img_copy, cv2.MORPH_CLOSE, kernel)
+
+        if op == st.ColorPostOps.OP_THRESHOLD:
+            img_copy = cv2.adaptiveThreshold(img_copy, 255, 1, 1, 11, 2)
+
+        if op == st.ColorPostOps.OP_NORMALIZE:
+            img_copy = cv2.normalize(img_copy, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
+
+    return img_copy
