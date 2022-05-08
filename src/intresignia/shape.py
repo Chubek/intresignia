@@ -68,6 +68,7 @@ def detect_circle(
             img_copy = cv2.morphologyEx(img_copy, cv2.MORPH_CLOSE, kernel)
 
         if op == st.CircleOps.OP_THRESHOLD:
+            img_copy = cv2.cvtColor(img_copy, cv2.COLOR_BGR2GRAY)
             img_copy = cv2.adaptiveThreshold(img_copy, 255, 1, 1, 11, 2)
 
         if op == st.CircleOps.OP_NORMALIZE:
