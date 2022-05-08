@@ -85,21 +85,20 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         else:
             x_left, x_right = x, x + r
 
-        if img[y_left:y_right, x_left:x_right, :].shape[1] == 0:
+        isolated = color_isolated[y_left:y_right, x_left:x_right, :]
+
+        if 0 in isolated.shape[:2]:
             continue
 
-        img_isolated_only = np.zeros((h, w))
-        img_isolated_only[y_left:y_right,  x_left:x_right] = 1
+        img_isolated_only = np.zeros((h, w, 3))
+        img_isolated_only[y_left:y_right,  
+                x_left:x_right] = np.where(color_isolated[y_left:y_right, x_left:x_right, :] > 0, 1, 0)
 
-        x_colored = np.sum(img_isolated_only, axis=1)
-        x_colored_indices = np.arange(0,
-                                      len(x_colored))[x_colored > 0]
-        x_min, x_max = min(x_colored_indices), max(x_colored_indices)
+        ys, xs, _ = np.where(img_isolated_only > 0)
 
-        y_colored = np.sum(img_isolated_only, axis=0)
-        y_colored_indices = np.arange(0,
-                                      len(y_colored))[y_colored > 0]
-        y_min, y_max = min(y_colored_indices), max(y_colored_indices)
+        x_min, x_max = np.min(xs), np.max(xs)
+        y_min, y_max = np.min(ys), np.max(ys)    
+
 
         cd = st.Coords(
             x1=x_min,
