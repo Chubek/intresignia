@@ -145,6 +145,6 @@ def orb_matcher(img: np.array, threshold=60,
         cond = scores_agg[post_] > threshold
 
     if cond:
-        -1, scores_agg
+        return -1, scores_agg
 
     return f"{classes[post_]} - { scores_agg[post_]}", scores_agg
