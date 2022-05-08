@@ -1,16 +1,11 @@
-import time
-from tkinter.messagebox import NO
-
 import cv2
 import numpy as np
-from cv2 import imshow
-from scipy import rand
 
-from . import color, matcher
+from . import auto_brighten, color
+from . import crop as crp
+from . import matcher
 from . import settings as st
 from . import shape, template
-from . import auto_brighten
-from . import crop as crp
 
 KERNEL = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
 
@@ -91,14 +86,13 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
             continue
 
         img_isolated_only = np.zeros((h, w, 3))
-        img_isolated_only[y_left:y_right,  
-                x_left:x_right] = np.where(color_isolated[y_left:y_right, x_left:x_right, :] > 0, 1, 0)
+        img_isolated_only[y_left:y_right,
+                          x_left:x_right] = np.where(color_isolated[y_left:y_right, x_left:x_right, :] > 0, 1, 0)
 
         ys, xs, _ = np.where(img_isolated_only > 0)
 
         x_min, x_max = np.min(xs), np.max(xs)
-        y_min, y_max = np.min(ys), np.max(ys)    
-
+        y_min, y_max = np.min(ys), np.max(ys)
 
         cd = st.Coords(
             x1=x_min,
@@ -126,7 +120,9 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
             temp, dct = matcher.orb_matcher(img_cropped,
                                             settings.classifier_threshold,
                                             settings.classifier_norm,
-                                            settings.classifier_aggmode)
+                                            settings.classifier_aggmode,
+                                            settings.classifer_postop,
+                                            settings.classifier_thresh_comp)
         else:
             temp, dct = template.get_max_sim(img_cropped, settings.thresh_temp)
 

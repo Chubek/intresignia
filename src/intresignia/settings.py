@@ -8,6 +8,7 @@ class ClassifierType(str, Enum):
     ORB = 'ORB'
     SSID = 'SSID'
 
+
 class ClassiferAggMode(str, Enum):
     MEAN = "MEAN"
     MIN = "MIN"
@@ -16,9 +17,17 @@ class ClassiferAggMode(str, Enum):
     AVG = "AVG"
     VAR = "VAR"
 
+
 class ClassifierPostOp(str, Enum):
     MIN = "MIN"
     MAX = "MAX"
+
+
+class ClassifierThreshComparator(str, Enum):
+    LARGER_THAN = "LARGER_THAN"
+    SMALLER_THAN = "SMALLER_THAN"
+    LARGER_THAN_EQ = "LARGER_THAN_EQ"
+    SMALLER_THAN_EQ = "SMALLER_THAN_EQ"
 
 
 class MatchNorm(str, Enum):
@@ -29,6 +38,7 @@ class MatchNorm(str, Enum):
     L2SQR = 'L2SQR'
     MINMAX = 'MINMAX'
     INF = 'INF'
+
 
 class Settings(BaseModel):
     """
@@ -80,6 +90,7 @@ class Settings(BaseModel):
     classifier_aggmode: Optional[ClassiferAggMode] = ClassiferAggMode.MEAN
     classifier_threshold: Optional[float] = 50
     classifer_postop: Optional[ClassifierPostOp] = ClassifierPostOp.MIN
+    classifier_thresh_comp: Optional[ClassifierThreshComparator] = ClassifierThreshComparator.SMALLER_THAN_EQ
 
     class Config:
         use_enum_values = True

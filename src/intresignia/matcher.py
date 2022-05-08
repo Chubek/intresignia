@@ -1,11 +1,11 @@
-from . import settings as st
 import inspect
 import os
-from tkinter.tix import MAX
 from typing import Dict, Union
 
 import cv2
 import numpy as np
+
+from . import settings as st
 
 path = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
@@ -72,7 +72,8 @@ queries_descriptors = {k: orb.detectAndCompute(
 def orb_matcher(img: np.array, threshold=60,
                 norm=st.MatchNorm.HAMMING,
                 mode=st.ClassiferAggMode.MEAN,
-                post=st.ClassifierPostOp.MIN) -> Union[str, Dict]:
+                post=st.ClassifierPostOp.MIN,
+                comp=st.ClassifierThreshComparator.SMALLER_THAN_EQ) -> Union[str, Dict]:
     global orb
     global queries_descriptors
 
@@ -135,7 +136,18 @@ def orb_matcher(img: np.array, threshold=60,
     print(
         f"Got a aggregate score of {scores_agg[post_]} which belongs to {classes[post_]}...")
 
-    if scores_agg[post_] < threshold:
+    cond = scores_agg[post_] < threshold
+
+    if comp == st.ClassifierThreshComparator.SMALLER_THAN:
+        cond = scores_agg[post_] < threshold
+    elif comp == st.ClassifierThreshComparator.SMALLER_THAN_EQ:
+        cond = scores_agg[post_] <= threshold
+    elif comp == st.ClassifierThreshComparator.LARGER_THAN_EQ:
+        cond = scores_agg[post_] >= threshold
+    elif comp == st.ClassifierThreshComparator.LARGER_THAN:
+        cond = scores_agg[post_] > threshold
+
+    if cond:
         print("Threshold larger than max mean score...")
         -1, scores_agg
 
