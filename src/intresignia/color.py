@@ -57,7 +57,6 @@ def enclose_red(img: np.array,
     kernel = cv2.getStructuringElement(
         shape=cv2.MORPH_ELLIPSE, ksize=(9, 9))
 
-    hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     copy_img = img.copy()
 
@@ -70,9 +69,10 @@ def enclose_red(img: np.array,
         copy_img = cv2.detailEnhance(copy_img)
 
     if op_brighten:
-        img, _, _ = auto_brighten.automatic_brightness_and_contrast(img)
+        copy_img, _, _ = auto_brighten.automatic_brightness_and_contrast(copy_img)
 
-        hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    
+    hsv_img = cv2.cvtColor(copy_img, cv2.COLOR_BGR2HSV)
         
     if op_brighten_hsv:
         hsv_img[:, :, 0] = np.where(
