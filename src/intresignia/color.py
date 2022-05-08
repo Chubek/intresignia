@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 
 from . import auto_brighten
-
+from . import detect as dt
 
 def enclose_red(img: np.array,
                 lower_thrershold=((120, 50, 50), (150, 255, 255)),
@@ -13,6 +13,7 @@ def enclose_red(img: np.array,
                 red_thresh=125,
                 op_brighten=False,
                 op_brighten_hsv=True,
+                op_sharpen=False,
                 add_hue=40) -> np.array:
     """
     This function takes four arguments and isolates the red color. The red
@@ -51,6 +52,10 @@ def enclose_red(img: np.array,
 
     copy_img = img.copy()
 
+    if op_sharpen:
+        copy_img = cv2.filter2D(copy_img, -1, dt.KERNEL)
+        copy_img = cv2.detailEnhance(copy_img)
+
     if op_brighten:
         img, _, _ = auto_brighten.automatic_brightness_and_contrast(img)
 
@@ -59,15 +64,13 @@ def enclose_red(img: np.array,
     if op_brighten_hsv:
         hsv_img[:, :, 0] = np.where(
             (hsv_img[:, :, 0] > 100 - add_hue) &
-            (hsv_img[:, :, 0] < 100 + (add_hue * 2)),
+            (hsv_img[:, :, 0] < 100 + (add_hue)),
             hsv_img[:, :, 0] + add_hue, hsv_img[:, :, 0])
 
         hsv_img[:, :, 0] = np.clip(hsv_img[:, :, 0], 0, 180)
 
         normed = cv2.normalize(hsv_img, None, 0, 180,
                                cv2.NORM_MINMAX, cv2.CV_8UC1)
-
-        close = cv2.morphologyEx(normed, cv2.MORPH_CLOSE, kernel)        
 
         hsv_img = cv2.GaussianBlur(normed, (5, 5), 0)
 

@@ -1,7 +1,8 @@
 from enum import Enum
-from typing import Optional, Tuple
+from typing import List, Optional, Tuple
 
 from pydantic import BaseModel
+from pyparsing import Opt
 
 
 class ClassifierType(str, Enum):
@@ -40,6 +41,17 @@ class MatchNorm(str, Enum):
     INF = 'INF'
 
 
+class CircleOps(str, Enum):
+    OP_CLOSE = "OP_CLOSE"
+    OP_NORMALIZE = "OP_NORMALIZE"
+    OP_THRESHOLD = "OP_THRESHOLD"
+    OP_BLUR = "OP_BLUR"
+    OP_SHARPEN = "OP_SHARPEN"
+
+class CircleAlgo(str, Enum):
+    GRADIENT = "GRADIENT"
+    GRADIENT_ALT = "GRADIENT_ALT"    
+
 class Settings(BaseModel):
     """
     This object includes the settings for detection.
@@ -73,17 +85,19 @@ class Settings(BaseModel):
         (120, 50, 50), (130, 255, 255))
     color_high: Optional[Tuple[Tuple[int, int, int], Tuple[int, int, int]]] = (
         (150, 60, 50), (180, 255, 255))
-    red_thresh: Optional[int] = 120
-    dp: Optional[float] = 2.8
-    min_dist_circle: Optional[int] = 400
-    min_radius: Optional[int] = 2
-    max_radius: Optional[int] = 250
-    param_1: Optional[int] = 400
-    param_2: Optional[int] = 120
-    do_op: Optional[bool] = True
-    do_op_hsv: Optional[bool] = True
-    do_op_circle: Optional[bool] = True
-    add_hue: Optional[int] = 20
+    color_red_thresh: Optional[int] = 120
+    circle_algo: Optional[CircleAlgo] = CircleAlgo.GRADIENT
+    circle_dp: Optional[float] = 2.8
+    circle_min_dist_from: Optional[int] = 400
+    circle_min_radius: Optional[int] = 2
+    circle_max_radius: Optional[int] = 250
+    circle_param_1: Optional[int] = 400
+    circle_param_2: Optional[int] = 120
+    circle_op_list: Optional[List[CircleOps]] = [CircleOps.OP_CLOSE]
+    color_auto_brighten: Optional[bool] = True
+    color_op_hsv: Optional[bool] = True
+    color_hue_value: Optional[int] = 20
+    color_sharpen: Optional[bool] = True
     do_classify: Optional[bool] = True
     classifier: Optional[ClassifierType] = ClassifierType.ORB
     classifier_norm: Optional[MatchNorm] = MatchNorm.HAMMING2
@@ -91,6 +105,8 @@ class Settings(BaseModel):
     classifier_threshold: Optional[float] = 50
     classifer_postop: Optional[ClassifierPostOp] = ClassifierPostOp.MIN
     classifier_thresh_comp: Optional[ClassifierThreshComparator] = ClassifierThreshComparator.SMALLER_THAN_EQ
+    global_verbose: Optional[bool] = False
+
 
     class Config:
         use_enum_values = True
@@ -101,3 +117,17 @@ class Coords(BaseModel):
     y2: int
     x1: int
     x2: int
+
+
+class Printer:
+    def __init__(self, verbose=False):
+        self.verbose = verbose
+
+    def __call__(self, *args, **kwargs):
+        try:
+            msg = kwargs.get("sep").join(args)
+        except:
+            msg = " ".join(args)
+
+        if self.verbose:
+            print(msg)
