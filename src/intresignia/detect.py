@@ -10,6 +10,7 @@ from . import color, matcher
 from . import settings as st
 from . import shape, template
 from . import auto_brighten
+from . import crop as crp
 
 KERNEL = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
 
@@ -88,8 +89,7 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
             continue
 
         img_isolated_only = np.zeros((h, w))
-        img_isolated_only[y_left - 10:y_right + 10,  x_left - 10:x_right +
-                          10] = 1
+        img_isolated_only[y_left:y_right,  x_left:x_right] = 1
 
         x_colored = np.sum(img_isolated_only, axis=1)
         x_colored_indices = np.arange(0,
@@ -108,7 +108,7 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
             y2=y_max
         )
 
-        img_cropped = img[cd.y1:cd.y2, cd.x1:cd.x2]
+        img_cropped = crp.imcrop(img, cd)
 
         img_cropped = cv2.resize(img_cropped, (400, 400))
 
@@ -138,13 +138,13 @@ def intresignia_detect(img_path: str, settings: st.Settings, pyrd=True) -> np.ar
         print("Shape detected, adding to list...")
         cv2.rectangle(output, (cd.x1, cd.y1), (cd.x2, cd.y2),
                       (0, 255, 0), thickness=2)
-        cv2.circle(output, (x, y), r, (0, 100, 0), 2)
+        cv2.circle(output, (x, y), r, (0, 180, 0), 2)
 
         if settings.do_classify:
             print("DoClassify enabled, marking classification...")
             cv2.putText(output, temp,
                         fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=0.5,
-                        color=(0, 200, 0), thickness=2, org=(cd.x2, cd.y2))
+                        color=(0, 210, 0), thickness=2, org=(x, y))
 
         temp = f"{i + 1} - {temp}"
         coords[temp] = {"real": (x, y, r), "adjusted": cd}
