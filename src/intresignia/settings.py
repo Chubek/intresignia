@@ -116,6 +116,7 @@ class Settings(BaseModel):
     classifier_threshold: Optional[float] = 50
     classifer_postop: Optional[ClassifierPostOp] = ClassifierPostOp.MIN
     classifier_thresh_comp: Optional[ClassifierThreshComparator] = ClassifierThreshComparator.SMALLER_THAN_EQ
+    classifer_add_bb: Optional[int] = 20
     global_verbose: Optional[bool] = False
 
 
