@@ -73,7 +73,7 @@ def orb_matcher(img: np.array, threshold=60,
                 norm=st.MatchNorm.HAMMING,
                 mode=st.ClassiferAggMode.MEAN,
                 post=st.ClassifierPostOp.MIN,
-                comp=st.ClassifierThreshComparator.SMALLER_THAN_EQ) -> Union[str, Dict]:
+                comp=st.ClassifierThreshComparator.SMALLER_THAN_EQ) -> Union[str, Dict, int]:
     global orb
     global queries_descriptors
 
@@ -145,6 +145,6 @@ def orb_matcher(img: np.array, threshold=60,
         cond = scores_agg[post_] > threshold
 
     if cond:
-        return -1, scores_agg
+        return -1, scores_agg, scores_agg[post_]
 
-    return f"{classes[post_]} - { scores_agg[post_]}", scores_agg
+    return f"{classes[post_]} - { scores_agg[post_]}", scores_agg, scores_agg[post_]

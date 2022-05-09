@@ -127,12 +127,13 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
             pass
 
         if stn.classifier == st.ClassifierType.ORB:
-            temp, dct = matcher.orb_matcher(img_cropped,
+            temp, dct, agg_score = matcher.orb_matcher(img_cropped,
                                             stn.classifier_threshold,
                                             stn.classifier_norm,
                                             stn.classifier_aggmode,
                                             stn.classifer_postop,
                                             stn.classifier_thresh_comp)
+            p(f"Got an aggscore of {agg_score}")
         else:
             temp, dct = template.get_max_sim(img_cropped, stn.thresh_temp)
 
@@ -154,7 +155,7 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
         temp = f"{i + 1} - {temp}"
         
         res[temp] = {}
-
+        res[temp]['agg_score'] = agg_score
         res[temp]['coords'] = {"real": (x, y, r), "adjusted": cd}
         res[temp]['scores'] = dct
         res[temp]['cropped'] = img_cropped
