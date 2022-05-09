@@ -105,10 +105,10 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
         y_min, y_max = np.min(ys), np.max(ys)
 
         cd = st.Coords(
-            x1=x_min - stn.classifer_add_bb,
-            x2=x_max + stn.classifer_add_bb,
-            y1=y_min - stn.classifer_add_bb,
-            y2=y_max + stn.classifer_add_bb
+            x1=x_min - stn.classifier_add_bb,
+            x2=x_max + stn.classifier_add_bb,
+            y1=y_min - stn.classifier_add_bb,
+            y2=y_max + stn.classifier_add_bb
         )
 
         img_cropped = crp.imcrop(img, cd)
