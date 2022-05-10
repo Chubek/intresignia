@@ -226,6 +226,7 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
     p("Detecting signs...")
 
     cnts = ops.find_contour(img_preprocessed)
+    p(f"Found {len(cnts)} contours")
 
     signs, coords = ops.find_signs(img_preprocessed, cnts, stn.detect_threshold,    
                          stn.detect_distance_threshold)
