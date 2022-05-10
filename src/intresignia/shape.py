@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 
 from . import settings as st
+from . import auto_brighten
 
 KERNEL = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
 
@@ -54,6 +55,16 @@ def detect_circle(
     img_copy = img.copy()
 
     for op in op_list:
+        if op == st.CircleOps.OP_ADJUST:
+            if len(img_copy.shape) == 2:
+                img_copy = cv2.cvtColor(img_copy, cv2.COLOR_GRAY2BGR)  
+            try:
+                img_copy, _, _ = auto_brighten.automatic_brightness_and_contrast(
+                    img_copy)
+            except:
+                pass
+
+
         if op == st.CircleOps.OP_BLUR:
             kernel_size = 5
             img_copy = cv2.GaussianBlur(img_copy,       
