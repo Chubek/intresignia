@@ -283,6 +283,8 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
                                                        stn.classifier_aggmode,
                                                        stn.classifer_postop,
                                                        stn.classifier_thresh_comp)
+        p(f"Got an aggscore of {agg_score}")
+
         if temp == -1:
             p("Could not detect any of the sign shapes based on given templates...")
             continue
