@@ -117,7 +117,11 @@ class Settings(BaseModel):
     classifer_postop: Optional[ClassifierPostOp] = ClassifierPostOp.MIN
     classifier_thresh_comp: Optional[ClassifierThreshComparator] = ClassifierThreshComparator.SMALLER_THAN_EQ
     classifier_add_bb: Optional[int] = 20
+    detect_min_variance: Optional[float] = 1000
     global_verbose: Optional[bool] = False
+    preprocess_cleanup: Optional[bool] = False
+    preprocess_remlines: Optional[bool] = False
+
 
 
     class Config:
