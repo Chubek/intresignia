@@ -235,7 +235,7 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True, resize=(8
 
     if len(coords) == 0:
         p("Did not find any signs.")
-        return output, signs, coords, img_preprocessed
+        return output, signs, coords, img_preprocessed, 0
 
     added = 0
 
