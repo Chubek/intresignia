@@ -208,7 +208,7 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
 
     if stn.preprocess_remlines:
         img_preprocessed = ops.remove_line(
-            ops.preprocess_image
+            img_preprocessed
         )
 
     p("Isolating the color red based on your settings...")
