@@ -109,7 +109,6 @@ def crop_contour(image, center, max_distance):
     bottom = min([int(center[0] + max_distance + 1), height-1])
     left = max([int(center[1] - max_distance), 0])
     right = min([int(center[1] + max_distance+1), width-1])
-    print(left, right, top, bottom)
     return image[left:right, top:bottom]
 
 

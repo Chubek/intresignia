@@ -238,7 +238,7 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
         return output, signs, coords, img_preprocessed
 
 
-    for i, c in coords:
+    for i, c in enumerate(coords):
         p(f"Operating on detected sign {i + 1} / {len(coords)}")
 
         ul_c, br_c = c
