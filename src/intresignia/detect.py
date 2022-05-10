@@ -229,12 +229,13 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
 
     signs, coords = ops.find_signs(img_preprocessed, cnts, stn.detect_threshold,    
                          stn.detect_distance_threshold)
-   
+    
+    output = img.copy()
+
     if len(coords) == 0:
         p("Did not find any signs.")
         return output, signs, coords, img_preprocessed
 
-    output = img.copy()
 
     for i, c in coords:
         p(f"Operating on detected sign {i + 1} / {len(coords)}")
