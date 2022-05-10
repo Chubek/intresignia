@@ -233,7 +233,7 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
         stn.circle_max_radius,
         stn.circle_param_1,
         stn.circle_param_2,
-        op_list=[],
+        op_list=stn.circle_op_list,
         algo=stn.circle_algo
     )
 
@@ -336,7 +336,7 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
             stn.circle_max_radius,
             stn.circle_param_1,
             stn.circle_param_2,
-            op_list=[],
+            op_list=stn.circle_op_list,
             algo=stn.circle_algo
         )
 
