@@ -122,7 +122,8 @@ class Settings(BaseModel):
     preprocess_cleanup: Optional[bool] = False
     preprocess_remlines: Optional[bool] = False
     preprocess_threshold: Optional[int] = 200
-
+    detect_threshold: Optional[int] = 300
+    detect_distance_threshold: Optional[int] = 100
 
 
     class Config:
