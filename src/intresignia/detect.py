@@ -231,8 +231,8 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
                          stn.detect_distance_threshold)
    
     if len(coords) == 0:
-        p("Did not find any signs. Returning None.")
-        return None, signs, coords, img_preprocessed
+        p("Did not find any signs.")
+        return output, signs, coords, img_preprocessed
 
     output = img.copy()
 
