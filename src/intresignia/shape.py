@@ -59,6 +59,8 @@ def detect_circle(
             img_copy = cv2.GaussianBlur(img_copy,       
                          (kernel_size, kernel_size), 0)
         if op == st.CircleOps.OP_SHARPEN:
+            if len(img_copy.shape) == 2:
+                img_copy = cv2.cvtColor(img_copy, cv2.COLOR_GRAY2BGR)  
             img_copy = cv2.filter2D(img_copy, -1, KERNEL)
             img_copy = cv2.detailEnhance(img_copy)
 
