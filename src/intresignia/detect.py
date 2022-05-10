@@ -107,7 +107,7 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True, resize=(820, 
         img_isolated_only = np.zeros((h, w, 3))
         img_isolated_only[y_left:y_right,
                           x_left:x_right] = np.where(
-            crp.imcrop(color_isolated, cd_r) > 0, 1, 0)
+            isolated > 0, 1, 0)
         
 
         ys, xs, _ = np.where(img_isolated_only > 0)
