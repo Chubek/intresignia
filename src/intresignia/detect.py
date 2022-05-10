@@ -266,6 +266,37 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True, resize=(8
 
         img_cropped = cv2.resize(img_cropped, (400, 400))
 
+        p("Isolating the color red based on your settings...")
+        color_isolated_ = color.enclose_red(
+            img, stn.color_low,
+            stn.color_high, stn.color_red_thresh,
+            op_brighten=stn.color_auto_brighten,
+            op_brighten_hsv=stn.color_op_hsv,
+            op_sharpen=stn.color_sharpen,
+            add_red=stn.color_add_red,
+            add_hue=stn.color_add_hue,
+            add_val=stn.color_add_value,
+            add_sat=stn.color_add_saturation,
+            post_ops=stn.color_post_ops,
+            convert_hsv=stn.color_convert_hsv)
+
+        
+        circles_ = shape.detect_circle(
+            color_isolated_,
+            stn.circle_dp,
+            stn.circle_min_dist_from,
+            stn.circle_min_radius,
+            stn.circle_max_radius,
+            stn.circle_param_1,
+            stn.circle_param_2,
+            op_list=stn.circle_op_list,
+            algo=stn.circle_algo
+        )
+
+        if not circles_:
+            p("No circles detected in the cropped image, continuing...")
+            continue
+
         img_cropped = cv2.GaussianBlur(img_cropped, (5, 5),
                                        cv2.BORDER_DEFAULT)
         img_cropped = cv2.filter2D(img_cropped, -1, KERNEL)
