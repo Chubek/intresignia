@@ -136,6 +136,9 @@ def enclose_red(img: np.array,
         if op == st.ColorPostOps.OP_NORMALIZE:
             img_copy = cv2.normalize(img_copy, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8UC1)
 
+    if len(img_copy.shape) == 2:
+        img_copy = cv2.cvtColor(img_copy, cv2.COLOR_GRAY2BGR)
+
     return img_copy
 
 
