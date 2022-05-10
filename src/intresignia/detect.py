@@ -193,7 +193,7 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True, resize=(820, 
 
     p("Done! Returning the output image, scores, sign coordinates and isolated color.")
 
-    return output, color_isolated, res
+    return output, color_isolated, res, added
 
 
 def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True, resize=(820, 600)) -> np.array:
@@ -237,6 +237,7 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True, resize=(8
         p("Did not find any signs.")
         return output, signs, coords, img_preprocessed
 
+    added = 0
 
     for i, c in enumerate(coords):
         p(f"Operating on detected sign {i + 1} / {len(coords)}")
@@ -324,5 +325,6 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True, resize=(8
         cv2.rectangle(output, (cd.x1, cd.y1), (cd.x2, cd.y2),
                       (0, 255, 0), thickness=2)
 
+        added += 1
 
-    return output, signs, coords, img_preprocessed
+    return output, signs, coords, img_preprocessed, added
