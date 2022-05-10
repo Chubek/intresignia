@@ -11,7 +11,7 @@ from . import ops
 KERNEL = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
 
 
-def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
+def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True, resize=(820, 600)) -> np.array:
     """
     This is the main detect function.
 
@@ -38,7 +38,7 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
     if pyrd:
         p("Pyring down the image as pyrd=True...")
         img = cv2.pyrDown(img)
-        img = cv2.resize(img, (1024, 768))
+        img = cv2.resize(img, resize)
 
     p("Isolating the color red based on your settings...")
     color_isolated = color.enclose_red(
@@ -196,7 +196,7 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
     return output, color_isolated, res
 
 
-def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
+def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True, resize=(820, 600)) -> np.array:
     print("Began intresignia-detect-ALT")
 
     p = st.Printer(verbose=stn.global_verbose)
@@ -206,7 +206,7 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
     if pyrd:
         p("Pyring down the image as pyrd=True...")
         img = cv2.pyrDown(img)
-        img = cv2.resize(img, (1024, 768))
+        img = cv2.resize(img, resize)
 
     p("Preprocessing the image...")
     img_preprocessed = ops.preprocess_image(img)
