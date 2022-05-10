@@ -29,6 +29,8 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
         Score dict: List 
             final SSIM score dict
     """
+    print("Began intresignia-detect-MAIN")
+
     p = st.Printer(verbose=stn.global_verbose)
 
     img = cv2.imread(img_path)
@@ -78,7 +80,7 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
         p(f"Operating on circle {i + 1}/{len(circles)}...")
 
         x, y, r = circle
-
+        p("Getting the real colors...")
         if y >= r:
             y_left, y_right = y - r, y + r
         else:
@@ -110,9 +112,15 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
 
         ys, xs, _ = np.where(img_isolated_only > 0)
 
+        if len(ys) == 0 or len(xs) == 0:
+            p("Image larger than zero empty, continuing...")
+            continue
+
+        
         x_min, x_max = np.min(xs), np.max(xs)
         y_min, y_max = np.min(ys), np.max(ys)
-
+        
+        p("Cropping the image...")
         cd = st.Coords(
             x1=x_min - stn.classifier_add_bb,
             x2=x_max + stn.classifier_add_bb,
@@ -121,13 +129,14 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
         )
 
         img_cropped = crp.imcrop(img, cd)
-
+        p("Getting the variance...")
         crp_var = np.var(img_cropped)
 
         if stn.detect_min_variance != 0:
             if crp_var < stn.detect_min_variance:
                 p("Variance too small, continuing...")
                 continue
+        p("Operating on cropped image...")
 
         img_cropped = cv2.resize(img_cropped, (400, 400))
 
@@ -188,6 +197,8 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
 
 
 def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.array:
+    print("Began intresignia-detect-ALT")
+
     p = st.Printer(verbose=stn.global_verbose)
 
     img = cv2.imread(img_path)
@@ -283,6 +294,11 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
             crp.imcrop(color_isolated, cd_r) > 0, 1, 0)
 
         ys, xs, _ = np.where(img_isolated_only > 0)
+
+        if len(ys) == 0 or len(xs) == 0:
+            p("Image larger than zero empty, continuing...")
+            continue
+
         p("Cropping the image...")
         x_min, x_max = np.min(xs), np.max(xs)
         y_min, y_max = np.min(ys), np.max(ys)
