@@ -293,7 +293,7 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True, resize=(8
             algo=stn.circle_algo
         )
 
-        if not circles_:
+        if not bool(circles_):
             p("No circles detected in the cropped image, continuing...")
             continue
 
