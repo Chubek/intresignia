@@ -243,7 +243,8 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
 
         ul_c, br_c = c
 
-        x1, y1, x2, y2 = ul_c, br_c
+        x1, y1 = ul_c
+        x2, y2 = br_c
 
         cv2.rectangle(output, (x1, y1), (x2, y2),
                       (0, 255, 0), thickness=2)
