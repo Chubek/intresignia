@@ -121,6 +121,7 @@ class Settings(BaseModel):
     global_verbose: Optional[bool] = False
     preprocess_cleanup: Optional[bool] = False
     preprocess_remlines: Optional[bool] = False
+    preprocess_threshold: Optional[int] = 200
 
 
 
