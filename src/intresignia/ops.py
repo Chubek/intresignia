@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import imutils
 from math import sqrt
 
 
@@ -83,8 +82,7 @@ def remove_other_color(img):
 
 
 def find_contour(image):
-    cnts = cv2.findContours(image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-    cnts = cnts[0] if imutils.is_cv2() else cnts[1]
+    cnts, _ = cv2.findContours(image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)    
     return cnts
 
 
@@ -122,7 +120,6 @@ def crop_sign(image, coordinate):
     bottom = min([int(coordinate[1][1]), height-1])
     left = max([int(coordinate[0][0]), 0])
     right = min([int(coordinate[1][0]), width-1])
-    # print(top,left,bottom,right)
     return image[top:bottom, left:right]
 
 
