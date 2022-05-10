@@ -250,6 +250,7 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
     for i, circle in enumerate(circles):
         p(f"Operating on circle {i + 1}/{len(circles)}...")
 
+        p("Getting the real colors...")
         x, y, r = circle
 
         if y >= r:
@@ -282,7 +283,7 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
             crp.imcrop(color_isolated, cd_r) > 0, 1, 0)
 
         ys, xs, _ = np.where(img_isolated_only > 0)
-
+        p("Cropping the image...")
         x_min, x_max = np.min(xs), np.max(xs)
         y_min, y_max = np.min(ys), np.max(ys)
 
@@ -294,14 +295,14 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
         )
 
         img_cropped = crp.imcrop(img, cd)
-
+        p("Getting the variance...")
         crp_var = np.var(img_cropped)
 
         if stn.detect_min_variance != 0:
             if crp_var < stn.detect_min_variance:
                 p("Variance too small, continuing...")
                 continue
-
+        p("Operating on cropped image...")
         img_p_cropped = crp.imcrop(img_preprocessed, cd)
 
         img_cropped = cv2.resize(img_cropped, (400, 400))
