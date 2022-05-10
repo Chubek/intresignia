@@ -246,7 +246,50 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
         x1, y1 = ul_c
         x2, y2 = br_c
 
-        cv2.rectangle(output, (x1, y1), (x2, y2),
+        p("Cropping the image...")
+        cd = st.Coords(
+            x1=x1 - stn.classifier_add_bb,
+            x2=x2 + stn.classifier_add_bb,
+            y1=y1 - stn.classifier_add_bb,
+            y2=y2 + stn.classifier_add_bb
+        )
+
+        img_cropped = crp.imcrop(img, cd)
+        p("Getting the variance...")
+        crp_var = np.var(img_cropped)
+
+        if stn.detect_min_variance != 0:
+            if crp_var < stn.detect_min_variance:
+                p("Variance too small, continuing...")
+                continue
+        p("Operating on cropped image...")
+
+        img_cropped = cv2.resize(img_cropped, (400, 400))
+
+        img_cropped = cv2.GaussianBlur(img_cropped, (5, 5),
+                                       cv2.BORDER_DEFAULT)
+        img_cropped = cv2.filter2D(img_cropped, -1, KERNEL)
+        img_cropped = cv2.detailEnhance(img_cropped)
+
+        try:
+            img_cropped, _, _ = auto_brighten.automatic_brightness_and_contrast(
+                img_cropped)
+        except:
+            pass
+
+        temp, dct, agg_score = matcher.orb_matcher(img_cropped,
+                                                       stn.classifier_threshold,
+                                                       stn.classifier_norm,
+                                                       stn.classifier_aggmode,
+                                                       stn.classifer_postop,
+                                                       stn.classifier_thresh_comp)
+        if temp == -1:
+            p("Could not detect any of the sign shapes based on given templates...")
+            continue
+
+        p("Shape detected, adding to list...")
+        cv2.rectangle(output, (cd.x1, cd.y1), (cd.x2, cd.y2),
                       (0, 255, 0), thickness=2)
+
 
     return output, signs, coords, img_preprocessed
