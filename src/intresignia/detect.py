@@ -232,7 +232,7 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
    
     if len(coords) == 0:
         p("Did not find any signs. Returning None.")
-        return None, signs, coords
+        return None, signs, coords, img_preprocessed
 
     output = img.copy()
 
@@ -246,4 +246,4 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True) -> np.arr
         cv2.rectangle(output, (x1, y1), (x2, y2),
                       (0, 255, 0), thickness=2)
 
-    return output, signs, img_preprocessed
+    return output, signs, coords, img_preprocessed
