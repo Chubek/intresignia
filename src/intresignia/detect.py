@@ -132,6 +132,9 @@ def intresignia_detect(img_path: str, stn: st.Settings, pyrd=True, resize=(820, 
         p("Getting the variance...")
         crp_var = np.var(img_cropped)
 
+        if 0 in img_cropped.shape:
+            continue
+
         if stn.detect_min_variance != 0:
             if crp_var < stn.detect_min_variance:
                 p("Variance too small, continuing...")
@@ -256,6 +259,10 @@ def intresignia_detect_alt(img_path: str, stn: st.Settings, pyrd=True, resize=(8
         )
 
         img_cropped = crp.imcrop(img, cd)
+        
+        if 0 in img_cropped.shape:
+            continue
+        
         p("Getting the variance...")
         crp_var = np.var(img_cropped)
 
